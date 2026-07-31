@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<!-- saved from url=(0229)file:///Users/mmarrer/Library/Application%20Support/Claude/local-agent-mode-sessions/00cb4a3f-d42b-4ec2-9033-656755d5769d/d4533622-54b7-4ca1-a28d-7c4c1d61bc38/local_87cc3542-8cfc-4380-9eb7-0869fd5afebc/outputs/pm_goal_lookup.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>SY26-27 PM Metrics &amp; Goals — Goal Lookup</title>
+<style>
+  :root{
+    --navy:#0b1f3a;
+    --blue:#1f5aa6;
+    --gold:#f2a900;
+    --bg:#f7f8fa;
+    --card:#ffffff;
+    --text:#1c2430;
+    --muted:#5a6472;
+    --border:#e1e5eb;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:Calibri, "Segoe UI", Verdana, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    margin:0;
+    padding:32px 20px 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;}
+  h1{
+    font-size:22px;
+    color:var(--navy);
+    margin:0 0 4px;
+  }
+  .subtitle{
+    color:var(--muted);
+    font-size:14px;
+    margin:0 0 28px;
+  }
+  .controls{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px 24px;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    margin-bottom:28px;
+  }
+  .field{display:flex;flex-direction:column;gap:6px;min-width:220px;flex:1;}
+  label{font-size:13px;font-weight:600;color:var(--navy);}
+  select{
+    font-family:inherit;
+    font-size:15px;
+    padding:9px 10px;
+    border-radius:6px;
+    border:1px solid #c7ccd4;
+    background:#fff;
+    color:var(--text);
+  }
+  select:focus{outline:2px solid var(--blue);}
+  .reset{
+    background:none;
+    border:1px solid #c7ccd4;
+    border-radius:6px;
+    padding:9px 14px;
+    font-size:14px;
+    color:var(--muted);
+    cursor:pointer;
+    height:38px;
+  }
+  .reset:hover{background:#eef1f4;}
+  .status{
+    font-size:14px;
+    color:var(--muted);
+    margin-bottom:14px;
+  }
+  .prompt{
+    text-align:center;
+    color:var(--muted);
+    font-size:15px;
+    padding:60px 20px;
+    border:1px dashed var(--border);
+    border-radius:10px;
+    background:#fff;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--blue);
+    border-radius:8px;
+    padding:16px 20px;
+    margin-bottom:14px;
+  }
+  .card .tags{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .tag{
+    font-size:12px;
+    font-weight:600;
+    padding:3px 9px;
+    border-radius:999px;
+    background:#eaf1fb;
+    color:var(--blue);
+  }
+  .tag.metric{background:#fdf1de;color:#8a5a00;}
+  .goal-text{
+    font-size:15px;
+    line-height:1.5;
+    white-space:pre-line;
+  }
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:36px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>SY26-27 PM Metrics &amp; Goals — Goal Lookup</h1>
+  <p class="subtitle">Select your role and grade level to see only the goals that apply to you. Source: "all metrics" tab, SY26-27 PM Metrics &amp; Goals.</p>
+
+  <div class="controls">
+    <div class="field">
+      <label for="role">Role</label>
+      <select id="role">
+        <option value="">Choose a role…</option>
+      <optgroup label="Individual Contributor/Teacher"><option value="Teacher">Teacher</option><option value="Teacher in Residence">Teacher in Residence</option><option value="Intervention Teachers - Newark Only">Intervention Teachers - Newark Only</option><option value="Social Worker">Social Worker</option><option value="Paraprofessional">Paraprofessional</option><option value="Speech-Language Pathologist">Speech-Language Pathologist</option><option value="Occupational Therapist">Occupational Therapist</option><option value="Learning Specialists – Resource Room">Learning Specialists – Resource Room</option><option value="Learning Specialists – Inclusion / Co-Teaching">Learning Specialists – Inclusion / Co-Teaching</option><option value="Teachers – Self-Contained Special Education">Teachers – Self-Contained Special Education</option><option value="Teachers – MLL">Teachers – MLL</option><option value="Teachers – Gifted and Talented">Teachers – Gifted and Talented</option></optgroup><optgroup label="Leader"><option value="Assistant Principals Instruction">Assistant Principals Instruction</option></optgroup></select>
+    </div>
+    <div class="field">
+      <label for="grade">Grade level</label>
+      <select id="grade">
+        <option value="">Choose a grade…</option>
+      <option value="K">Kindergarten</option><option value="1">Grade 1</option><option value="2">Grade 2</option><option value="3">Grade 3</option><option value="4">Grade 4</option><option value="5">Grade 5</option><option value="6">Grade 6</option><option value="7">Grade 7</option><option value="8">Grade 8</option><option value="9">Grade 9</option><option value="10">Grade 10</option><option value="11">Grade 11</option><option value="12">Grade 12</option></select>
+    </div>
+    <div class="field">
+      <label for="contentArea">Content area</label>
+      <select id="contentArea"><option value="">All content areas</option><option value="ELA">ELA</option><option value="Math">Math</option><option value="Science">Science</option><option value="History / Social Studies">History / Social Studies</option><option value="ELA / Math">ELA / Math</option><option value="All High School Subjects">All High School Subjects</option><option value="SAT Prep">SAT Prep</option><option value="Art / Music / PE / Coding / Advisory">Art / Music / PE / Coding / Advisory</option></select>
+    </div>
+    <button class="reset" id="resetBtn">Reset</button>
+  </div>
+
+  <div id="results"><div class="status">1 goal for <strong>Teacher</strong> — Grade 4 — Art / Music / PE / Coding / Advisory</div><div class="card"><div class="tags"><span class="tag">Art / Music / PE / Coding / Advisory</span><span class="tag metric">Academics: Internal Assessment Proficiency</span><span class="tag" style="background:#f1f1f1;color:#555;">Applies: K–12</span></div><div class="goal-text">[xx]% of students will demonstrate proficiency on a culminating performance task or showcase (e.g., art exhibition, music performance, coding project, physical fitness assessment) by EOY, scored against a common rubric agreed upon with the AP.</div></div></div>
+</div>
+
+<footer>Internal KTAF tool — data pulled from the "all metrics" tab. Update the sheet, then re-run this tool to refresh.</footer>
+
+<script>
+const GRADES = ["K","1","2","3","4","5","6","7","8","9","10","11","12"];
+
+function range(a,b){
+  const ia = GRADES.indexOf(a), ib = GRADES.indexOf(b);
+  return GRADES.slice(ia, ib+1);
+}
+
+// Each row: roleType, role, span (display), grades (array of applicable grade labels), contentArea, metric, goal
+const DATA = [
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"K-2", grades:range("K","2"), contentArea:"ELA", metric:"Academics: Topline Proficiency", goal:"% DIBELS At/Above Benchmark (Grades K–2) by EOY"},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"K-2", grades:range("K","2"), contentArea:"Math", metric:"Academics: Topline Proficiency", goal:"% of students who hit their K–2 math goal on iReady by EOY (at/above grade level)"},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"3-8", grades:range("3","8"), contentArea:"ELA", metric:"Academics: Topline Proficiency", goal:"[xx]% of my students will meet or exceed proficiency benchmarks on NJSLA/FAST (Grades 3–8)"},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"3-8", grades:range("3","8"), contentArea:"Math", metric:"Academics: Topline Proficiency", goal:"[xx]% of my students will meet or exceed proficiency benchmarks on NJSLA/FAST (Grades 3–8)"},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"5,8", grades:["5","8"], contentArea:"Science", metric:"Academics: State Test Proficiency", goal:"5/8 Science NJSLA/FAST Proficiency: [xx]% of my Grade [5/8] students will score proficient on the Science NJSLA/FAST."},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"6,7", grades:["6","7"], contentArea:"Science", metric:"Academics: Internal Assessment Proficiency", goal:"[xx]% of my students will score [70%] or above on QA3"},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher in Residence", span:"K-4", grades:range("K","4"), contentArea:"Science", metric:"Academics: Internal Assessment Proficiency", goal:"[xx]% of my students will score [70%] or above on QA3"},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"5–8", grades:range("5","8"), contentArea:"History / Social Studies", metric:"Academics: Internal Assessment Proficiency", goal:"[xx]% of my students will score [70%] or above on QA3"},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"9–12", grades:range("9","12"), contentArea:"ELA / Math", metric:"Academics: Topline Proficiency", goal:"[xx]% of my Grade [9/10/11/12] students will meet or exceed the PSAT/SAT benchmark in [ELA/Math]"},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"9–12", grades:range("9","12"), contentArea:"History / Social Studies", metric:"Academics: Internal Assessment Proficiency", goal:"[xx]% of my students will score [70%] or above on final DBQ/EOC exam"},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"9–12", grades:range("9","12"), contentArea:"All High School Subjects", metric:"Academics: Topline Proficiency", goal:"[xx]% of students in my course(s) will maintain a GPA of [3.0] or above at semester, and my course failure rate will remain at or below [xx]%."},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"11", grades:["11"], contentArea:"SAT Prep", metric:"Academics: Topline Proficiency", goal:"[xx]% of my Grade 11 students will meet or exceed the SAT benchmark in [ELA/Math]"},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"K–12", grades:range("K","12"), contentArea:"Art / Music / PE / Coding / Advisory", metric:"Academics: Internal Assessment Proficiency", goal:"[xx]% of students will demonstrate proficiency on a culminating performance task or showcase (e.g., art exhibition, music performance, coding project, physical fitness assessment) by EOY, scored against a common rubric agreed upon with the AP."},
+  {roleType:"Individual Contributor/Teacher", role:"Intervention Teachers - Newark Only", span:"K-8", grades:range("K","8"), contentArea:"ELA / Math Intervention", metric:"Academics: ELA Growth", goal:"[xx]% of students on my ELA intervention caseload will move out of well below DIBELS by EOY, as tracked through bi-weekly progress monitoring."},
+  {roleType:"Individual Contributor/Teacher", role:"Intervention Teachers - Newark Only", span:"K-8", grades:range("K","8"), contentArea:"ELA / Math Intervention", metric:"Academics: Math Growth", goal:"[xx]% of students make stretch growth in i-Ready."},
+  {roleType:"Individual Contributor/Teacher", role:"Social Worker", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Case Management)", metric:"Family & Compliance", goal:"100% of IEPs on my caseload will be held on time with required documentation.\nI will conduct at least [1] proactive family check-in per student per semester outside of formal IEP meetings."},
+  {roleType:"Individual Contributor/Teacher", role:"Paraprofessional", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Support)", metric:"IEP Goal Progress", goal:"[xx]% of students on my caseload will make measurable progress toward their annual IEP goals by EOY, as documented in quarterly progress reports."},
+  {roleType:"Individual Contributor/Teacher", role:"Speech-Language Pathologist", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Support)", metric:"IEP Goal Progress", goal:"[xx]% of students on my caseload will make measurable progress toward their annual IEP goals by EOY, as documented in quarterly progress reports."},
+  {roleType:"Individual Contributor/Teacher", role:"Occupational Therapist", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Support)", metric:"IEP Goal Progress", goal:"[xx]% of students on my caseload will make measurable progress toward their annual IEP goals by EOY, as documented in quarterly progress reports."},
+  {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Resource Room", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Resource Room)", metric:"IEP Goal Progress", goal:"[xx]% of students on my caseload will make measurable progress toward their annual IEP goals by EOY, as documented in quarterly progress reports."},
+  {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Resource Room", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Resource Room)", metric:"Academic Growth", goal:"[xx]% of students on my caseload will demonstrate at least one level of growth on i-Ready (Math) or well above average growth on DIBELS (ELA) by EOY, as tracked through bi-weekly progress monitoring."},
+  {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Resource Room", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Resource Room)", metric:"Family & Compliance", goal:"100% of IEPs on my caseload will be held on time with required documentation.\nI will conduct at least [1] proactive family check-in per student per semester outside of formal IEP meetings."},
+  {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Inclusion / Co-Teaching", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Inclusion/Co-Teaching)", metric:"SpEd Differential", goal:"On average, students in my caseload will perform within 10% of their general education peers."},
+  {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Inclusion / Co-Teaching", span:"9–12", grades:range("9","12"), contentArea:"Special Education (Inclusion/Co-Teaching)", metric:"GPA & Course Completion (HS LSs)", goal:"[xx]% of students in my course(s) will maintain a GPA of [3.0] or above at semester, and my course failure rate will remain at or below [xx]%."},
+  {roleType:"Individual Contributor/Teacher", role:"Teachers – Self-Contained Special Education", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Self-Contained)", metric:"DLM Assessment", goal:"[xx]% of students on my caseload who take the DLM alternate assessment will demonstrate growth of at least [1] Essential Element level in ELA and/or Math by EOY."},
+  {roleType:"Individual Contributor/Teacher", role:"Teachers – Self-Contained Special Education", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Self-Contained)", metric:"IEP Goal Progress", goal:"[xx]% of students on my caseload will make measurable progress toward their annual IEP goals by EOY, as documented in quarterly progress reports."},
+  {roleType:"Individual Contributor/Teacher", role:"Teachers – Self-Contained Special Education", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Self-Contained)", metric:"Family & Compliance", goal:"100% of IEPs on my caseload will be held on time with required documentation.\nI will conduct at least [1] proactive family check-in per student per semester outside of formal IEP meetings."},
+  {roleType:"Individual Contributor/Teacher", role:"Teachers – MLL", span:"K–12", grades:range("K","12"), contentArea:"MLL / ESL", metric:"Academic Growth", goal:"[xx]% of students on my ELA intervention caseload will move out of well below DIBELS by EOY, as tracked through bi-weekly progress monitoring."},
+  {roleType:"Individual Contributor/Teacher", role:"Teachers – MLL", span:"K–12", grades:range("K","12"), contentArea:"MLL / ESL", metric:"Academic Growth", goal:"[xx]% of students make stretch growth in i-Ready."},
+  {roleType:"Individual Contributor/Teacher", role:"Teachers – MLL", span:"K–12", grades:range("K","12"), contentArea:"MLL / ESL", metric:"Language Proficiency/Growth", goal:"[xx]% of students meet growth target on ACCESS/WIDA."},
+  {roleType:"Individual Contributor/Teacher", role:"Teachers – Gifted and Talented", span:"K-8", grades:range("K","8"), contentArea:"Gifted & Talented", metric:"Program Goals", goal:"[xx]% of students make stretch growth in i-Ready."},
+  {roleType:"Leader", role:"Assistant Principals Instruction", span:"K–12", grades:range("K","12"), contentArea:"School Leadership", metric:"Academics: Proficiency & Growth", goal:"90% of all academic goals met by teachers in my caseload (iReady, DIBELS, SAT, GPA, NJSLA, QAs, GPA, etc)"},
+  {roleType:"Leader", role:"Assistant Principals Instruction", span:"K–12", grades:range("K","12"), contentArea:"School Leadership", metric:"Teacher Retention", goal:"90% of teachers who score a 3.0 or higher on ETR stay or are promoted."}
+];
+
+const roleSel = document.getElementById('role');
+const gradeSel = document.getElementById('grade');
+const contentSel = document.getElementById('contentArea');
+const results = document.getElementById('results');
+
+// Build role dropdown, grouped by role type
+const roleTypes = [...new Set(DATA.map(d => d.roleType))];
+roleTypes.forEach(rt => {
+  const group = document.createElement('optgroup');
+  group.label = rt;
+  const roles = [...new Set(DATA.filter(d => d.roleType === rt).map(d => d.role))];
+  roles.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r;
+    opt.textContent = r;
+    group.appendChild(opt);
+  });
+  roleSel.appendChild(group);
+});
+
+GRADES.forEach(g => {
+  const opt = document.createElement('option');
+  opt.value = g;
+  opt.textContent = g === "K" ? "Kindergarten" : "Grade " + g;
+  gradeSel.appendChild(opt);
+});
+
+function updateContentAreaOptions(){
+  const role = roleSel.value;
+  contentSel.innerHTML = '';
+
+  if(!role){
+    contentSel.disabled = true;
+    const opt = document.createElement('option');
+    opt.value = '';
+    opt.textContent = 'Choose a role first…';
+    contentSel.appendChild(opt);
+    return;
+  }
+
+  contentSel.disabled = false;
+  const allOpt = document.createElement('option');
+  allOpt.value = '';
+  allOpt.textContent = 'All content areas';
+  contentSel.appendChild(allOpt);
+
+  const areas = [...new Set(DATA.filter(d => d.role === role).map(d => d.contentArea))];
+  areas.forEach(a => {
+    const opt = document.createElement('option');
+    opt.value = a;
+    opt.textContent = a;
+    contentSel.appendChild(opt);
+  });
+}
+
+function render(){
+  const role = roleSel.value;
+  const grade = gradeSel.value;
+  const contentArea = contentSel.value;
+
+  if(!role || !grade){
+    results.innerHTML = '<div class="prompt">Choose a role and grade level above to see the goals that apply to you. Use the content area filter to narrow further once a role is selected.</div>';
+    return;
+  }
+
+  let matches = DATA.filter(d => d.role === role && d.grades.includes(grade));
+  if(contentArea){
+    matches = matches.filter(d => d.contentArea === contentArea);
+  }
+
+  if(matches.length === 0){
+    const areaNote = contentArea ? ' in <strong>' + contentArea + '</strong>' : '';
+    results.innerHTML = '<div class="prompt">No goals found for <strong>' + role + '</strong> at <strong>' + (grade==="K"?"Kindergarten":"Grade "+grade) + '</strong>' + areaNote + '. Double-check the role/grade/content area combination, or this may not be defined yet in the source sheet.</div>';
+    return;
+  }
+
+  let html = '<div class="status">' + matches.length + ' goal' + (matches.length===1?'':'s') + ' for <strong>' + role + '</strong> — ' + (grade==="K"?"Kindergarten":"Grade "+grade) + (contentArea ? ' — ' + contentArea : '') + '</div>';
+  matches.forEach(m => {
+    html += '<div class="card">';
+    html += '<div class="tags"><span class="tag">' + m.contentArea + '</span><span class="tag metric">' + m.metric + '</span><span class="tag" style="background:#f1f1f1;color:#555;">Applies: ' + m.span + '</span></div>';
+    html += '<div class="goal-text">' + m.goal.replace(/</g,'&lt;') + '</div>';
+    html += '</div>';
+  });
+  results.innerHTML = html;
+}
+
+roleSel.addEventListener('change', () => {
+  updateContentAreaOptions();
+  render();
+});
+gradeSel.addEventListener('change', render);
+contentSel.addEventListener('change', render);
+document.getElementById('resetBtn').addEventListener('click', () => {
+  roleSel.value = '';
+  gradeSel.value = '';
+  updateContentAreaOptions();
+  render();
+});
+
+updateContentAreaOptions();
+render();
+</script>
+
+
+</body></html>
