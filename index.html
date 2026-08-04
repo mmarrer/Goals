@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<!-- saved from url=(0229)file:///Users/mmarrer/Library/Application%20Support/Claude/local-agent-mode-sessions/00cb4a3f-d42b-4ec2-9033-656755d5769d/d4533622-54b7-4ca1-a28d-7c4c1d61bc38/local_87cc3542-8cfc-4380-9eb7-0869fd5afebc/outputs/pm_goal_lookup.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<title>SY26-27 PM Metrics &amp; Goals — Goal Lookup</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SY26-27 PM Metrics & Goals — Goal Lookup</title>
 <style>
   :root{
     --navy:#0b1f3a;
     --blue:#1f5aa6;
+    --sky:#5fb0d9;
+    --sky-light:#eaf6fb;
     --gold:#f2a900;
+    --gold-light:#fdf1de;
+    --green:#3f8a5f;
+    --green-light:#e8f4ec;
     --bg:#f7f8fa;
     --card:#ffffff;
     --text:#1c2430;
@@ -31,11 +36,19 @@
   .subtitle{
     color:var(--muted);
     font-size:14px;
+    margin:0 0 14px;
+  }
+  .accent-bar{
+    height:5px;
+    width:100%;
+    border-radius:999px;
     margin:0 0 28px;
+    background:linear-gradient(90deg, var(--sky), var(--gold), var(--green));
   }
   .controls{
     background:var(--card);
     border:1px solid var(--border);
+    border-top:4px solid var(--sky);
     border-radius:10px;
     padding:20px 24px;
     display:flex;
@@ -45,28 +58,33 @@
     margin-bottom:28px;
   }
   .field{display:flex;flex-direction:column;gap:6px;min-width:220px;flex:1;}
-  label{font-size:13px;font-weight:600;color:var(--navy);}
+  label{font-size:13px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.03em;}
+  label.grade-label{color:var(--blue);}
+  label.content-label{color:var(--green);}
   select{
     font-family:inherit;
     font-size:15px;
     padding:9px 10px;
     border-radius:6px;
-    border:1px solid #c7ccd4;
+    border:2px solid #c7ccd4;
     background:#fff;
     color:var(--text);
   }
-  select:focus{outline:2px solid var(--blue);}
+  #role:focus{outline:none;border-color:var(--navy);}
+  #grade:focus{outline:none;border-color:var(--blue);}
+  #contentArea:focus{outline:none;border-color:var(--green);}
   .reset{
     background:none;
-    border:1px solid #c7ccd4;
+    border:2px solid var(--gold);
     border-radius:6px;
     padding:9px 14px;
     font-size:14px;
-    color:var(--muted);
+    font-weight:600;
+    color:#8a5a00;
     cursor:pointer;
-    height:38px;
+    height:42px;
   }
-  .reset:hover{background:#eef1f4;}
+  .reset:hover{background:var(--gold-light);}
   .status{
     font-size:14px;
     color:var(--muted);
@@ -77,18 +95,20 @@
     color:var(--muted);
     font-size:15px;
     padding:60px 20px;
-    border:1px dashed var(--border);
+    border:2px dashed var(--sky);
     border-radius:10px;
-    background:#fff;
+    background:var(--sky-light);
   }
   .card{
     background:var(--card);
     border:1px solid var(--border);
-    border-left:4px solid var(--blue);
+    border-left:4px solid var(--sky);
     border-radius:8px;
     padding:16px 20px;
     margin-bottom:14px;
   }
+  .card:nth-child(3n+2){border-left-color:var(--green);}
+  .card:nth-child(3n+3){border-left-color:var(--gold);}
   .card .tags{
     display:flex;
     gap:8px;
@@ -100,10 +120,11 @@
     font-weight:600;
     padding:3px 9px;
     border-radius:999px;
-    background:#eaf1fb;
+    background:var(--sky-light);
     color:var(--blue);
   }
-  .tag.metric{background:#fdf1de;color:#8a5a00;}
+  .tag.metric{background:var(--gold-light);color:#8a5a00;}
+  .tag.span{background:var(--green-light);color:var(--green);}
   .goal-text{
     font-size:15px;
     line-height:1.5;
@@ -121,28 +142,31 @@
 <div class="wrap">
   <h1>SY26-27 PM Metrics &amp; Goals — Goal Lookup</h1>
   <p class="subtitle">Select your role and grade level to see only the goals that apply to you. Source: "all metrics" tab, SY26-27 PM Metrics &amp; Goals.</p>
+  <div class="accent-bar"></div>
 
   <div class="controls">
     <div class="field">
       <label for="role">Role</label>
       <select id="role">
         <option value="">Choose a role…</option>
-      <optgroup label="Individual Contributor/Teacher"><option value="Teacher">Teacher</option><option value="Teacher in Residence">Teacher in Residence</option><option value="Intervention Teachers - Newark Only">Intervention Teachers - Newark Only</option><option value="Social Worker">Social Worker</option><option value="Paraprofessional">Paraprofessional</option><option value="Speech-Language Pathologist">Speech-Language Pathologist</option><option value="Occupational Therapist">Occupational Therapist</option><option value="Learning Specialists – Resource Room">Learning Specialists – Resource Room</option><option value="Learning Specialists – Inclusion / Co-Teaching">Learning Specialists – Inclusion / Co-Teaching</option><option value="Teachers – Self-Contained Special Education">Teachers – Self-Contained Special Education</option><option value="Teachers – MLL">Teachers – MLL</option><option value="Teachers – Gifted and Talented">Teachers – Gifted and Talented</option></optgroup><optgroup label="Leader"><option value="Assistant Principals Instruction">Assistant Principals Instruction</option><option value="Assistant Principals Culture">Assistant Principals Culture</option><option value="Dean">Dean</option><option value="Assistant Principals SpEd">Assistant Principals SpEd</option><option value="Senior Director of KIPP Forward">Senior Director of KIPP Forward</option><option value="Principals">Principals</option><option value="HOS / MDoS / CAO">HOS / MDoS / CAO</option><option value="CAO">CAO</option></optgroup></select>
+      </select>
     </div>
     <div class="field">
-      <label for="grade">Grade level</label>
+      <label for="grade" class="grade-label">Grade level</label>
       <select id="grade">
         <option value="">Choose a grade…</option>
-      <option value="K">Kindergarten</option><option value="1">Grade 1</option><option value="2">Grade 2</option><option value="3">Grade 3</option><option value="4">Grade 4</option><option value="5">Grade 5</option><option value="6">Grade 6</option><option value="7">Grade 7</option><option value="8">Grade 8</option><option value="9">Grade 9</option><option value="10">Grade 10</option><option value="11">Grade 11</option><option value="12">Grade 12</option></select>
+      </select>
     </div>
     <div class="field">
-      <label for="contentArea">Content area</label>
-      <select id="contentArea"><option value="">All content areas</option><option value="Portfolio Leadership">Portfolio Leadership</option></select>
+      <label for="contentArea" class="content-label">Content area</label>
+      <select id="contentArea" disabled>
+        <option value="">Choose a role first…</option>
+      </select>
     </div>
     <button class="reset" id="resetBtn">Reset</button>
   </div>
 
-  <div id="results"><div class="status">7 goals for <strong>HOS / MDoS / CAO</strong> — Grade 1</div><div class="card"><div class="tags"><span class="tag">Portfolio Leadership</span><span class="tag metric">Portfolio Academics: Proficieny &amp; Growth</span><span class="tag" style="background:#f1f1f1;color:#555;">Applies: K-12</span></div><div class="goal-text">90% of schools in my portfolio will meet or exceed their school-level topline proficiency goal by EOY</div></div><div class="card"><div class="tags"><span class="tag">Portfolio Leadership</span><span class="tag metric">Portfolio Culture &amp; Attendance</span><span class="tag" style="background:#f1f1f1;color:#555;">Applies: K-12</span></div><div class="goal-text">&lt; XX% out of school suspension in my portfolio (varies by grade band and region)</div></div><div class="card"><div class="tags"><span class="tag">Portfolio Leadership</span><span class="tag metric">Portfolio Culture &amp; Attendance</span><span class="tag" style="background:#f1f1f1;color:#555;">Applies: K-12</span></div><div class="goal-text">My school performs above 50th percentile on Insight focus questions (consistency, interactions, joy).</div></div><div class="card"><div class="tags"><span class="tag">Portfolio Leadership</span><span class="tag metric">Portfolio Culture &amp; Attendance</span><span class="tag" style="background:#f1f1f1;color:#555;">Applies: K-12</span></div><div class="goal-text">XX% ADA; my portoflio meets monthly ADA checkpoint goals</div></div><div class="card"><div class="tags"><span class="tag">Portfolio Leadership</span><span class="tag metric">Portfolio Culture &amp; Attendance</span><span class="tag" style="background:#f1f1f1;color:#555;">Applies: K-12</span></div><div class="goal-text">The chronic absenteeism rate in my portfolio will decrease by [xx] percentage points from SY25–26 actuals</div></div><div class="card"><div class="tags"><span class="tag">Portfolio Leadership</span><span class="tag metric">Portfolio Culture &amp; Attendance</span><span class="tag" style="background:#f1f1f1;color:#555;">Applies: K-12</span></div><div class="goal-text">XX% of students persist within my grade band by EOY</div></div><div class="card"><div class="tags"><span class="tag">Portfolio Leadership</span><span class="tag metric">Portfolio Talent Pipeline</span><span class="tag" style="background:#f1f1f1;color:#555;">Applies: K-12</span></div><div class="goal-text">[xx]% of schools in my portfolio will meet their teacher retention goals (80% and 90% thresholds)</div></div></div>
+  <div id="results"></div>
 </div>
 
 <footer>Internal KTAF tool — data pulled from the "all metrics" tab. Update the sheet, then re-run this tool to refresh.</footer>
@@ -304,7 +328,7 @@ function render(){
   let html = '<div class="status">' + matches.length + ' goal' + (matches.length===1?'':'s') + ' for <strong>' + role + '</strong> — ' + (grade==="K"?"Kindergarten":"Grade "+grade) + (contentArea ? ' — ' + contentArea : '') + '</div>';
   matches.forEach(m => {
     html += '<div class="card">';
-    html += '<div class="tags"><span class="tag">' + m.contentArea + '</span><span class="tag metric">' + m.metric + '</span><span class="tag" style="background:#f1f1f1;color:#555;">Applies: ' + m.span + '</span></div>';
+    html += '<div class="tags"><span class="tag">' + m.contentArea + '</span><span class="tag metric">' + m.metric + '</span><span class="tag span">Applies: ' + m.span + '</span></div>';
     html += '<div class="goal-text">' + m.goal.replace(/</g,'&lt;') + '</div>';
     html += '</div>';
   });
@@ -327,6 +351,5 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 updateContentAreaOptions();
 render();
 </script>
-
-
-</body></html>
+</body>
+</html>
