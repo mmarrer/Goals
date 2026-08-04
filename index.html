@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!-- saved from url=(0220)file:///Users/mmarrer/Library/Application%20Support/Claude/local-agent-mode-sessions/00cb4a3f-d42b-4ec2-9033-656755d5769d/d4533622-54b7-4ca1-a28d-7c4c1d61bc38/local_87cc3542-8cfc-4380-9eb7-0869fd5afebc/outputs/index.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<title>SY26-27 PM Metrics &amp; Goals — Goal Lookup</title>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SY26-27 PM Metrics & Goals — Goal Lookup</title>
 <style>
   :root{
     --navy:#0b1f3a;
@@ -149,22 +149,24 @@
       <label for="role">Role</label>
       <select id="role">
         <option value="">Choose a role…</option>
-      <optgroup label="Individual Contributor/Teacher"><option value="Teacher">Teacher</option><option value="Teacher in Residence">Teacher in Residence</option><option value="Intervention Teachers - Newark Only">Intervention Teachers - Newark Only</option><option value="Social Worker">Social Worker</option><option value="Paraprofessional">Paraprofessional</option><option value="Speech-Language Pathologist">Speech-Language Pathologist</option><option value="Occupational Therapist">Occupational Therapist</option><option value="Learning Specialists – Resource Room">Learning Specialists – Resource Room</option><option value="Learning Specialists – Inclusion / Co-Teaching">Learning Specialists – Inclusion / Co-Teaching</option><option value="Teachers – Self-Contained Special Education">Teachers – Self-Contained Special Education</option><option value="Teachers – MLL">Teachers – MLL</option><option value="Teachers – Gifted and Talented">Teachers – Gifted and Talented</option></optgroup><optgroup label="Leader"><option value="Assistant Principals Instruction">Assistant Principals Instruction</option><option value="Assistant Principals Culture">Assistant Principals Culture</option><option value="Dean">Dean</option><option value="Assistant Principals SpEd">Assistant Principals SpEd</option><option value="Senior Director of KIPP Forward">Senior Director of KIPP Forward</option><option value="Principals">Principals</option><option value="HOS / MDoS / CAO">HOS / MDoS / CAO</option><option value="CAO">CAO</option></optgroup></select>
+      </select>
     </div>
     <div class="field">
       <label for="grade" class="grade-label">Grade level</label>
       <select id="grade">
         <option value="">Choose a grade…</option>
-      <option value="K">Kindergarten</option><option value="1">Grade 1</option><option value="2">Grade 2</option><option value="3">Grade 3</option><option value="4">Grade 4</option><option value="5">Grade 5</option><option value="6">Grade 6</option><option value="7">Grade 7</option><option value="8">Grade 8</option><option value="9">Grade 9</option><option value="10">Grade 10</option><option value="11">Grade 11</option><option value="12">Grade 12</option></select>
+      </select>
     </div>
     <div class="field">
       <label for="contentArea" class="content-label">Content area</label>
-      <select id="contentArea" disabled=""><option value="">Choose a role first…</option></select>
+      <select id="contentArea" disabled>
+        <option value="">Choose a role first…</option>
+      </select>
     </div>
     <button class="reset" id="resetBtn">Reset</button>
   </div>
 
-  <div id="results"><div class="prompt">Choose a role and grade level above to see the goals that apply to you. Use the content area filter to narrow further once a role is selected.</div></div>
+  <div id="results"></div>
 </div>
 
 <footer>Internal KTAF tool — data pulled from the "all metrics" tab. Update the sheet, then re-run this tool to refresh.</footer>
@@ -349,6 +351,5 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 updateContentAreaOptions();
 render();
 </script>
-
-
-</body></html>
+</body>
+</html>
