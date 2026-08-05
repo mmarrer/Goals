@@ -184,6 +184,7 @@ const DATA = [
   {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"K-2", grades:range("K","2"), contentArea:"ELA", metric:"Academics: Topline Proficiency", goal:"% DIBELS At/Above Benchmark (Grades K–2) by EOY"},
   {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"K-2", grades:range("K","2"), contentArea:"Math", metric:"Academics: Topline Proficiency", goal:"% of students who hit their K–2 math goal on iReady by EOY (at/above grade level)"},
   {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"3-8", grades:range("3","8"), contentArea:"ELA", metric:"Academics: Topline Proficiency", goal:"[xx]% of my students will meet or exceed proficiency benchmarks on NJSLA/FAST (Grades 3–8)"},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"3-8", grades:range("3","8"), contentArea:"ELA", metric:"Academics: Topline Proficiency", goal:"[xx]% of my students will meet or exceed proficiency benchmarks on DIBELS"},
   {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"3-8", grades:range("3","8"), contentArea:"Math", metric:"Academics: Topline Proficiency", goal:"[xx]% of my students will meet or exceed proficiency benchmarks on NJSLA/FAST (Grades 3–8)"},
   {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"5,8", grades:["5","8"], contentArea:"Science", metric:"Academics: State Test Proficiency", goal:"5/8 Science NJSLA/FAST Proficiency: [xx]% of my Grade [5/8] students will score proficient on the Science NJSLA/FAST."},
   {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"6,7", grades:["6","7"], contentArea:"Science", metric:"Academics: Internal Assessment Proficiency", goal:"[xx]% of my students will score [70%] or above on QA3"},
@@ -191,7 +192,7 @@ const DATA = [
   {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"5–8", grades:range("5","8"), contentArea:"History / Social Studies", metric:"Academics: Internal Assessment Proficiency", goal:"[xx]% of my students will score [70%] or above on QA3"},
   {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"9–12", grades:range("9","12"), contentArea:"ELA / Math", metric:"Academics: Topline Proficiency", goal:"[xx]% of my Grade [9/10/11/12] students will meet or exceed the PSAT/SAT benchmark in [ELA/Math]"},
   {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"9–12", grades:range("9","12"), contentArea:"History / Social Studies", metric:"Academics: Internal Assessment Proficiency", goal:"[xx]% of my students will score [70%] or above on final DBQ/EOC exam"},
-  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"9–12", grades:range("9","12"), contentArea:"All High School Subjects", metric:"Academics: Topline Proficiency", goal:"[xx]% of students in my course(s) will maintain a GPA of [3.0] or above at semester, and my course failure rate will remain at or below [xx]%."},
+  {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"9–12", grades:range("9","12"), contentArea:"All High School Subjects", metric:"Academics: Topline Proficiency", goal:"[xx]% of students in my course(s) will maintain a GPA of [3.0] or above at semester, and my course failure rate will remain at or below [xx]%.", universal:true},
   {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"11", grades:["11"], contentArea:"SAT Prep", metric:"Academics: Topline Proficiency", goal:"[xx]% of my Grade 11 students will meet or exceed the SAT benchmark in [ELA/Math]"},
   {roleType:"Individual Contributor/Teacher", role:"Teacher", span:"K–12", grades:range("K","12"), contentArea:"Art / Music / PE / Coding / Advisory", metric:"Academics: Internal Assessment Proficiency", goal:"[xx]% of students will demonstrate proficiency on a culminating performance task or showcase (e.g., art exhibition, music performance, coding project, physical fitness assessment) by EOY, scored against a common rubric agreed upon with the AP."},
   {roleType:"Individual Contributor/Teacher", role:"Intervention Teachers - Newark Only", span:"K-8", grades:range("K","8"), contentArea:"ELA / Math Intervention", metric:"Academics: ELA Growth", goal:"[xx]% of students on my ELA intervention caseload will move out of well below DIBELS by EOY, as tracked through bi-weekly progress monitoring."},
@@ -245,6 +246,7 @@ const DATA = [
   {roleType:"Leader", role:"HOS / MDoS / CAO", span:"K-12", grades:range("K","12"), contentArea:"Portfolio Leadership", metric:"Portfolio Culture & Attendance", goal:"XX% of students persist within my grade band by EOY"},
   {roleType:"Leader", role:"HOS / MDoS / CAO", span:"K-12", grades:range("K","12"), contentArea:"Portfolio Leadership", metric:"Portfolio Talent Pipeline", goal:"[xx]% of schools in my portfolio will meet their teacher retention goals (80% and 90% thresholds)"},
   {roleType:"Leader", role:"CAO", span:"K-12", grades:range("K","12"), contentArea:"Academics", metric:"GPA", goal:"XX% of students will achieve a >3.0 Y1 GPA across all schools"},
+  {roleType:"Leader", role:"CAO", span:"K-12", grades:range("K","12"), contentArea:"Academics", metric:"GPA", goal:"XX% of students will achieve a <2.0 Y1 GPA across all schools"},
   {roleType:"Leader", role:"CAO", span:"K-12", grades:range("K","12"), contentArea:"Academics", metric:"GPA", goal:"XX% of students will achieve a >3.0 cumulative unweighted GPA in G11 across all high schools"},
   {roleType:"Leader", role:"CAO", span:"K-12", grades:range("K","12"), contentArea:"College & Career Readiness", metric:"PSAT / SAT", goal:"[xx]% of my Grade [9/10/11/12] students will meet or exceed the PSAT/SAT benchmark in [ELA/Math]"}
 ];
@@ -295,7 +297,7 @@ function updateContentAreaOptions(){
   allOpt.textContent = 'All content areas';
   contentSel.appendChild(allOpt);
 
-  const areas = [...new Set(DATA.filter(d => d.role === role).map(d => d.contentArea))];
+  const areas = [...new Set(DATA.filter(d => d.role === role && !d.universal).map(d => d.contentArea))];
   areas.forEach(a => {
     const opt = document.createElement('option');
     opt.value = a;
@@ -316,7 +318,7 @@ function render(){
 
   let matches = DATA.filter(d => d.role === role && d.grades.includes(grade));
   if(contentArea){
-    matches = matches.filter(d => d.contentArea === contentArea);
+    matches = matches.filter(d => d.contentArea === contentArea || d.universal);
   }
 
   if(matches.length === 0){
