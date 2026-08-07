@@ -64,6 +64,7 @@
   label.region-label{color:var(--purple);}
   label.grade-label{color:var(--blue);}
   label.content-label{color:var(--green);}
+  label.goal-label{color:#8a5a00;}
   select{
     font-family:inherit;
     font-size:15px;
@@ -155,6 +156,92 @@
     margin-top:-4px;
     margin-bottom:20px;
   }
+  .mode-toggle{
+    display:flex;
+    gap:8px;
+    margin-bottom:24px;
+    border-bottom:2px solid var(--border);
+  }
+  .mode-btn{
+    font-family:inherit;
+    font-size:15px;
+    font-weight:700;
+    color:var(--muted);
+    background:none;
+    border:none;
+    padding:10px 4px 12px;
+    cursor:pointer;
+    border-bottom:3px solid transparent;
+    margin-bottom:-2px;
+  }
+  .mode-btn.active{color:var(--navy);border-bottom-color:var(--sky);}
+  .mode-btn:hover{color:var(--navy);}
+  .section-intro{
+    font-size:13px;
+    color:var(--muted);
+    margin:0 0 18px;
+  }
+  .goal-controls{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-top:4px solid var(--green);
+    border-radius:10px;
+    padding:20px 24px;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    margin-bottom:14px;
+  }
+  .category-tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .category-btn{
+    font-family:inherit;
+    font-size:13px;
+    font-weight:600;
+    padding:7px 14px;
+    border-radius:999px;
+    border:2px solid var(--border);
+    background:#fff;
+    color:var(--muted);
+    cursor:pointer;
+  }
+  .category-btn.active{border-color:var(--green);color:var(--green);background:var(--green-light);}
+  .goal-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--green);
+    border-radius:8px;
+    padding:16px 20px;
+    margin-bottom:14px;
+  }
+  .goal-card h3{
+    font-size:14px;
+    margin:0 0 12px;
+    color:var(--navy);
+  }
+  .metric-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:7px 0;
+    border-bottom:1px solid var(--border);
+    gap:12px;
+  }
+  .metric-row:last-child{border-bottom:none;}
+  .metric-name{font-size:14px;color:var(--muted);}
+  .metric-value{font-size:16px;font-weight:700;color:var(--green);white-space:nowrap;}
+  .metric-value.tbd{
+    font-size:12px;
+    font-weight:700;
+    color:#8a5a00;
+    background:var(--gold-light);
+    padding:2px 10px;
+    border-radius:999px;
+  }
   footer{
     text-align:center;
     color:var(--muted);
@@ -165,46 +252,121 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>SY26-27 PM Metrics &amp; Goals — Goal Lookup</h1>
-  <p class="subtitle">Select your region, role, and grade level to see only the goals that apply to you. Source: "New Jersey" and "Miami" tabs, SY26-27 PM Metrics &amp; Goals.</p>
+  <h1>SY26-27 PM Metrics &amp; Goals</h1>
+  <p class="subtitle">Two tools in one: look up which goal <em>metrics</em> apply to your role, or look up the actual <em>numbers</em> behind school and grade-level goals.</p>
   <div class="accent-bar"></div>
 
-  <div class="controls">
-    <div class="field">
-      <label for="region" class="region-label">Region</label>
-      <select id="region">
-        <option value="">Choose a region…</option>
-        <option value="newark">Newark, NJ</option>
-        <option value="camden">Camden, NJ</option>
-        <option value="paterson">Paterson, NJ</option>
-        <option value="miami">Miami, FL</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="role">Role</label>
-      <select id="role" disabled>
-        <option value="">Choose a region first…</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="grade" class="grade-label">Grade level</label>
-      <select id="grade" disabled>
-        <option value="">Choose a region first…</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="contentArea" class="content-label">Content area</label>
-      <select id="contentArea" disabled>
-        <option value="">Choose a role first…</option>
-      </select>
-    </div>
-    <button class="reset" id="resetBtn">Reset</button>
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="modeMetricBtn">1. Metric Lookup</button>
+    <button class="mode-btn" id="modeGoalBtn">2. Goal Lookup</button>
   </div>
 
-  <div id="results"></div>
+  <div id="metricSection">
+    <p class="section-intro">Select your region, role, and grade level to see which goal <em>metrics</em> apply to you (e.g. "% students At/Above Benchmark on DIBELS"). Source: "New Jersey" and "Miami" tabs, SY26-27 PM Metrics &amp; Goals.</p>
+    <div class="controls">
+      <div class="field">
+        <label for="region" class="region-label">Region</label>
+        <select id="region">
+          <option value="">Choose a region…</option>
+          <option value="newark">Newark, NJ</option>
+          <option value="camden">Camden, NJ</option>
+          <option value="paterson">Paterson, NJ</option>
+          <option value="miami">Miami, FL</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="role">Role</label>
+        <select id="role" disabled>
+          <option value="">Choose a region first…</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="grade" class="grade-label">Grade level</label>
+        <select id="grade" disabled>
+          <option value="">Choose a region first…</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="contentArea" class="content-label">Content area</label>
+        <select id="contentArea" disabled>
+          <option value="">Choose a role first…</option>
+        </select>
+      </div>
+      <button class="reset" id="resetBtn">Reset</button>
+    </div>
+
+    <div id="results"></div>
+  </div>
+
+  <div id="goalSection" style="display:none;">
+    <p class="section-intro">Look up the actual <em>numbers</em> behind school and grade-level goals, by region. Source: "KIPP NJ Goals, 2026-27" spreadsheet. Where the sheet hasn't been filled in yet, this shows <span class="metric-value tbd">TBD</span>.</p>
+
+    <div class="goal-controls">
+      <div class="field">
+        <label for="goalRegion" class="region-label">Region</label>
+        <select id="goalRegion">
+          <option value="">Choose a region…</option>
+          <option value="newark">Newark, NJ</option>
+          <option value="camden">Camden, NJ</option>
+          <option value="paterson">Paterson, NJ</option>
+          <option value="miami">Miami, FL</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="goalSchool" class="content-label">School</label>
+        <select id="goalSchool" disabled>
+          <option value="">Choose a region first…</option>
+        </select>
+      </div>
+    </div>
+    <p class="data-note">Note: the numbers themselves come from the "KIPP NJ Goals, 2026-27" spreadsheet, which only covers Newark, Camden, and Paterson at the region level (not by individual school) — so every school within a region currently shows the same region-wide goal. Miami isn't in that spreadsheet at all yet, so Miami's grade/content/goal combinations will all show <span class="metric-value tbd">TBD</span> until a real numbers sheet exists for it; its DIBELS Goals tab doesn't exist either.</p>
+
+    <div id="goalCategoryWrap" style="display:none;">
+      <div class="category-tabs">
+        <button class="category-btn active" id="catSchoolGradeBtn">School &amp; Grade Proficiency Goals</button>
+        <button class="category-btn" id="catDibelsBtn">DIBELS Goals</button>
+      </div>
+
+      <div id="schoolGradePanel">
+        <div class="goal-controls">
+          <div class="field">
+            <label for="goalGrade" class="grade-label">Grade</label>
+            <select id="goalGrade" disabled>
+              <option value="">Choose a region first…</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="goalContent" class="content-label">Content</label>
+            <select id="goalContent" disabled>
+              <option value="">Choose a grade first…</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="goalAssessment" class="goal-label">Goal</label>
+            <select id="goalAssessment" disabled>
+              <option value="">Choose a content area first…</option>
+            </select>
+          </div>
+        </div>
+        <div id="goalResults"></div>
+      </div>
+
+      <div id="dibelsPanel" style="display:none;">
+        <div class="goal-controls">
+          <div class="field">
+            <label for="dibelsGrade" class="grade-label">Grade</label>
+            <select id="dibelsGrade">
+              <option value="">Choose a region first…</option>
+            </select>
+          </div>
+        </div>
+        <div id="dibelsResults"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<footer>Internal KTAF tool — data pulled from the "New Jersey" and "Miami" tabs. Update the sheet, then re-run this tool to refresh.<br>Note: Newark, Camden, and Paterson all currently show the shared "New Jersey" tab data — the sheet's city-specific tabs ("TBD: newark targets," "TBD: camden targets," "TBD: paterson targets") aren't filled in yet. Once those are populated, this tool should be updated to pull city-specific goals instead.<br>Also note: as of this refresh, the New Jersey tab does not yet include Culture &amp; Attendance goals for Principals beyond talent retention, or any Portfolio Leadership (HOS/MDoS/CAO) rows — those appear to still be in progress on the source sheet.</footer>
+<footer>Internal KTAF tool — Part 1 pulled from the "New Jersey" and "Miami" tabs of SY26-27 PM Metrics &amp; Goals; Part 2 pulled from the "KIPP NJ Goals, 2026-27" spreadsheet. Update the sheets, then re-run this tool to refresh.<br>Note: Newark, Camden, and Paterson all currently show the shared "New Jersey" tab data in Part 1 — the sheet's city-specific tabs ("TBD: newark targets," "TBD: camden targets," "TBD: paterson targets") aren't filled in yet. Once those are populated, this tool should be updated to pull city-specific goals instead.<br>Also note: as of this refresh, the New Jersey tab does not yet include Culture &amp; Attendance goals for Principals beyond talent retention, or any Portfolio Leadership (HOS/MDoS/CAO) rows — those appear to still be in progress on the source sheet.<br>In Part 2, almost all numeric targets are still TBD in the source sheet (only two GPA goals — Newark and Camden MS — are filled in as of this refresh); Paterson is also missing several grade-band/HS rows that exist for Newark and Camden, and the DIBELS Goals tab has no values filled in for any region yet. The School dropdown in Part 2 uses the actual school names and grade bands Margaret provided — Newark: SPARK/Seek/THRIVE/KURA/Life (K-4), BOLD/Justice/Purpose/TEAM/Rise (5-8), Lab/Collegiate (9-12); Camden: LSP (K-4), Sumner (K-6), LSM/Hatch (5-8), KHS (9-12); Paterson: Paterson ES (K-4), Paterson MS (5-8); Miami: Royalty/Legacy ES (K-5), Legacy MS/Courage (6-8), Miami Tech High (9 only). Selecting a school narrows the Grade dropdown to the grades that school actually serves. Neither source spreadsheet breaks numbers out by individual school, so every school in a region still shows that region's same shared goal. Miami's Part 2 rows are a structural placeholder built from Part 1's Miami metrics (DIBELS/Star/FAST/EOC), not a real numbers sheet, so they're all TBD; Miami also has no DIBELS Goals tab equivalent.</footer>
 
 <script>
 const GRADES = ["K","1","2","3","4","5","6","7","8","9","10","11","12"];
@@ -347,6 +509,165 @@ const DATA = {
     {roleType:"Leader", role:"CAO", span:"K-12", grades:range("K","12"), contentArea:"College & Career Readiness", metric:"PSAT / SAT", goal:"[xx]% of my Grade [9/10/11/12] students will meet or exceed the PSAT/SAT benchmark in [ELA/Math]"}
   ]
 };
+
+// ---- Part 2: Goal Lookup (actual numbers) data, from "KIPP NJ Goals, 2026-27" ----
+// prof/bfb are null where the source sheet cell is still blank (TBD).
+const SCHOOL_GRADE_GOALS = {
+  newark: [
+    {gb:"3-8", grade:"3-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"3-8", grade:"3-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"ES", grade:"3-4", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"ES", grade:"K-2", subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+    {gb:"ES", grade:"3-4", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5 and 8", subject:"Science", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"Science", assessment:"QA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"Social Studies", assessment:"QA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"GPA", assessment:"GPA", prof:"65%", bfb:"3%", universal:true},
+    {gb:"HS", grade:"9", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"HS", grade:"11", subject:"ELA", assessment:"NJGPA", prof:null, bfb:null},
+    {gb:"HS", grade:"9", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"HS", grade:"11", subject:"Math", assessment:"NJGPA", prof:null, bfb:null},
+    {gb:"HS", grade:"11", subject:"Science", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"History", assessment:"QA", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"ELA", assessment:"QA", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"Math", assessment:"QA", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"Science", assessment:"QA", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"CCR", assessment:"QA", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"GPA", assessment:"GPA", prof:null, bfb:null, universal:true}
+  ],
+  camden: [
+    {gb:"3-8", grade:"3-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"3-8", grade:"3-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"ES", grade:"3-4", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"ES", grade:"K-2", subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+    {gb:"ES", grade:"3-4", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5 and 8", subject:"Science", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"Science", assessment:"QA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"Social Studies", assessment:"QA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+    {gb:"HS", grade:"9", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"HS", grade:"11", subject:"ELA", assessment:"NJGPA", prof:null, bfb:null},
+    {gb:"HS", grade:"9", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"HS", grade:"11", subject:"Math", assessment:"NJGPA", prof:null, bfb:null},
+    {gb:"HS", grade:"11", subject:"Science", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"History", assessment:"QA", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"ELA", assessment:"QA", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"Math", assessment:"QA", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"Science", assessment:"QA", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"GPA", assessment:"GPA", prof:null, bfb:null, universal:true},
+    {gb:"HS", grade:"9-12", subject:"CCR", assessment:"QA", prof:null, bfb:null}
+  ],
+  paterson: [
+    {gb:"3-8", grade:"3-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"3-8", grade:"3-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"ES", grade:"3-4", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"ES", grade:"K-2", subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+    {gb:"ES", grade:"3-4", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5 and 8", subject:"Science", assessment:"NJSLA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"Science", assessment:"QA", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"Social Studies", assessment:"QA", prof:null, bfb:null}
+    // Note: Paterson's tab does not yet include an MS GPA row or any HS rows —
+    // those exist for Newark and Camden but are still missing here.
+  ],
+  // Miami isn't in the "KIPP NJ Goals, 2026-27" spreadsheet at all — there's no numeric
+  // source sheet for it yet. These rows mirror the grade bands/subjects/assessments from
+  // the Miami "Metric Lookup" data (Part 1) — DIBELS, Star, FAST, EOC — so the structure
+  // is honest to how Miami actually measures things, but every number here is TBD until
+  // a real "KIPP Miami Goals" sheet exists to pull from.
+  miami: [
+    {gb:"ES", grade:"K-2", subject:"ELA", assessment:"DIBELS At/Above Benchmark", prof:null, bfb:null},
+    {gb:"ES", grade:"K-2", subject:"ELA", assessment:"DIBELS Well Below Benchmark", prof:null, bfb:null},
+    {gb:"ES", grade:"K-2", subject:"ELA", assessment:"Star Early Literacy/Reading (PM3)", prof:null, bfb:null},
+    {gb:"ES", grade:"K-2", subject:"Math", assessment:"Star Math (PM3)", prof:null, bfb:null},
+    {gb:"3-8", grade:"3-8", subject:"ELA", assessment:"DIBELS At/Above Benchmark", prof:null, bfb:null},
+    {gb:"3-8", grade:"3-8", subject:"ELA", assessment:"DIBELS Well Below Benchmark", prof:null, bfb:null},
+    {gb:"3-9", grade:"3-9", subject:"ELA", assessment:"FAST ELA (PM3)", prof:null, bfb:null},
+    {gb:"3-9", grade:"3-9", subject:"Math", assessment:"FAST Math/Alg EOC/Geo EOC (PM3)", prof:null, bfb:null},
+    {gb:"MS", grade:"5,8,9", subject:"Science", assessment:"Science/Biology EOC", prof:null, bfb:null},
+    {gb:"MS", grade:"6,7", subject:"Science", assessment:"QA3", prof:null, bfb:null},
+    {gb:"MS", grade:"5-8", subject:"History", assessment:"QA3", prof:null, bfb:null},
+    {gb:"MS", grade:"7", subject:"History", assessment:"Civics EOC", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"ELA", assessment:"PSAT/SAT Benchmark", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"Math", assessment:"PSAT/SAT Benchmark", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"History", assessment:"Final Exam", prof:null, bfb:null},
+    {gb:"HS", grade:"9-12", subject:"GPA", assessment:"GPA", prof:null, bfb:null, universal:true},
+    {gb:"K-12", grade:"K-12", subject:"Enrichment", assessment:"Culminating Performance Task", prof:null, bfb:null}
+  ]
+};
+
+// School dropdown options per region — these are the actual school names Margaret
+// provided; they aren't in either source spreadsheet (which only track region-wide
+// rollups), so picking a school doesn't change the underlying numbers, just labels
+// the result with which school you're looking at and narrows the Grade dropdown to
+// grades that school actually serves (see SCHOOL_GRADES below).
+const SCHOOL_OPTIONS = {
+  newark: ["SPARK","Seek","THRIVE","KURA","Life","BOLD","Justice","Purpose","TEAM","Rise","Lab","Collegiate"],
+  camden: ["LSP","LSM","Hatch","Sumner","KHS"],
+  paterson: ["Paterson MS","Paterson ES"],
+  miami: ["Legacy ES","Legacy MS","Royalty","Courage","Miami Tech High"]
+};
+
+// Which grades each school actually serves, per Margaret. BOLD spans both the ES and
+// MS grade bands (K-8), so its grade list is the union of both. Grade tokens use the
+// same K-12 format as the rest of the tool.
+const SCHOOL_GRADES = {
+  newark: {
+    "SPARK": range("K","4"),
+    "Seek": range("K","4"),
+    "THRIVE": range("K","4"),
+    "KURA": range("K","4"),
+    "Life": range("K","4"),
+    "BOLD": range("5","8"),
+    "Justice": range("5","8"),
+    "Purpose": range("5","8"),
+    "TEAM": range("5","8"),
+    "Rise": range("5","8"),
+    "Lab": range("9","12"),
+    "Collegiate": range("9","12")
+  },
+  camden: {
+    "LSP": range("K","4"),
+    "Sumner": range("K","6"),
+    "LSM": range("5","8"),
+    "Hatch": range("5","8"),
+    "KHS": range("9","12")
+  },
+  paterson: {
+    "Paterson ES": range("K","4"),
+    "Paterson MS": range("5","8")
+  },
+  miami: {
+    "Royalty": range("K","5"),
+    "Legacy ES": range("K","5"),
+    "Legacy MS": range("6","8"),
+    "Courage": range("6","8"),
+    "Miami Tech High": ["9"]
+  }
+};
+
+// DIBELS Goals: grade list per region (Paterson's sheet is missing grades 4 and 8).
+// Every value is currently blank in the source sheet (100% TBD as of this refresh),
+// broken out by student group. Update DIBELS_VALUES as the sheet gets filled in —
+// key format is "region|grade|group" -> {moyAtAbove, eoyAtAbove, moyWellBelow, eoyWellBelow}.
+// Miami has no DIBELS Goals tab source, so it's left out here on purpose.
+const DIBELS_GRADES = {
+  newark: ["K-2","K","1","2","3","4","5","6","7","8"],
+  camden: ["K-2","K","1","2","3","4","5","6","7","8"],
+  paterson: ["K-2","K","1","2","3","5","6","7"]
+};
+const DIBELS_GROUPS = ["All Students", "Students with IEPs", "MLL"];
+const DIBELS_VALUES = {}; // empty = every combo is TBD right now
+
+function dibelsValue(region, grade, group){
+  const key = region + "|" + grade + "|" + group;
+  return DIBELS_VALUES[key] || {moyAtAbove:null, eoyAtAbove:null, moyWellBelow:null, eoyWellBelow:null};
+}
 
 const REGION_LABEL = {newark:"Newark, NJ", camden:"Camden, NJ", paterson:"Paterson, NJ", miami:"Miami, FL"};
 // Newark, Camden, and Paterson all pull from the shared "New Jersey" tab until the sheet's
@@ -510,6 +831,238 @@ populateGrades();
 updateRoleOptions();
 updateContentAreaOptions();
 render();
+
+// ---- Mode toggle (Part 1 vs Part 2) ----
+const modeMetricBtn = document.getElementById('modeMetricBtn');
+const modeGoalBtn = document.getElementById('modeGoalBtn');
+const metricSection = document.getElementById('metricSection');
+const goalSection = document.getElementById('goalSection');
+
+modeMetricBtn.addEventListener('click', () => {
+  modeMetricBtn.classList.add('active');
+  modeGoalBtn.classList.remove('active');
+  metricSection.style.display = '';
+  goalSection.style.display = 'none';
+});
+modeGoalBtn.addEventListener('click', () => {
+  modeGoalBtn.classList.add('active');
+  modeMetricBtn.classList.remove('active');
+  goalSection.style.display = '';
+  metricSection.style.display = 'none';
+});
+
+// ---- Part 2: Goal Lookup ----
+const goalRegionSel = document.getElementById('goalRegion');
+const goalSchoolSel = document.getElementById('goalSchool');
+const goalCategoryWrap = document.getElementById('goalCategoryWrap');
+const catSchoolGradeBtn = document.getElementById('catSchoolGradeBtn');
+const catDibelsBtn = document.getElementById('catDibelsBtn');
+const schoolGradePanel = document.getElementById('schoolGradePanel');
+const dibelsPanel = document.getElementById('dibelsPanel');
+const goalGradeSel = document.getElementById('goalGrade');
+const goalContentSel = document.getElementById('goalContent');
+const goalAssessmentSel = document.getElementById('goalAssessment');
+const goalResults = document.getElementById('goalResults');
+const dibelsGradeSel = document.getElementById('dibelsGrade');
+const dibelsResults = document.getElementById('dibelsResults');
+
+function fmtValue(v){
+  return v === null || v === undefined || v === ''
+    ? '<span class="metric-value tbd">TBD</span>'
+    : '<span class="metric-value">' + v + '</span>';
+}
+
+function rowLabel(r){
+  return r.gb + " (Grade " + r.grade + ") — " + r.subject + " — " + r.assessment;
+}
+
+// The sheet expresses "Grade" as bands/lists like "3-8", "5 and 8", "K-2" — expand
+// those into individual grade tokens (K, 1, 2, … 12) so the dropdown can offer one
+// real grade level at a time, sorted in K→12 order, instead of raw band strings.
+function parseGradeTokens(str){
+  if(str.indexOf(' and ') !== -1) return str.split(' and ').map(s => s.trim());
+  if(str.indexOf(',') !== -1) return str.split(',').map(s => s.trim());
+  if(str.indexOf('-') !== -1){
+    const parts = str.split('-').map(s => s.trim());
+    return range(parts[0], parts[1]);
+  }
+  return [str.trim()];
+}
+
+function gradeOptionLabel(g){
+  return g === "K" ? "Kindergarten" : "Grade " + g;
+}
+
+function fillSelect(sel, values, placeholder, labelFn){
+  sel.innerHTML = '';
+  const chooseOpt = document.createElement('option');
+  chooseOpt.value = '';
+  chooseOpt.textContent = placeholder;
+  sel.appendChild(chooseOpt);
+  values.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v;
+    opt.textContent = labelFn ? labelFn(v) : v;
+    sel.appendChild(opt);
+  });
+}
+
+function rowCoversGrade(r, grade){
+  return parseGradeTokens(r.grade).indexOf(grade) !== -1;
+}
+
+function populateGoalSchoolOptions(){
+  const region = goalRegionSel.value;
+  const schools = SCHOOL_OPTIONS[region] || [];
+  goalSchoolSel.disabled = !region;
+  fillSelect(goalSchoolSel, schools, region ? 'Choose a school…' : 'Choose a region first…');
+  goalGradeSel.disabled = true;
+  fillSelect(goalGradeSel, [], 'Choose a school first…');
+  goalContentSel.disabled = true;
+  fillSelect(goalContentSel, [], 'Choose a grade first…');
+  goalAssessmentSel.disabled = true;
+  fillSelect(goalAssessmentSel, [], 'Choose a content area first…');
+  goalResults.innerHTML = '';
+}
+
+// Note: neither source spreadsheet breaks numbers out by individual school — every
+// school within a region shares the same region-wide goal. So "school" affects the
+// label on the result card below AND narrows Grade to only the grades that school
+// actually serves (via SCHOOL_GRADES), but doesn't change the underlying numbers.
+function populateGoalGradeOptions(){
+  const region = goalRegionSel.value;
+  const school = goalSchoolSel.value;
+  const rows = SCHOOL_GRADE_GOALS[region] || [];
+  const covered = new Set();
+  rows.forEach(r => parseGradeTokens(r.grade).forEach(g => covered.add(g)));
+  const schoolGrades = (SCHOOL_GRADES[region] || {})[school];
+  const grades = GRADES.filter(g => covered.has(g) && (!schoolGrades || schoolGrades.indexOf(g) !== -1)); // GRADES is already K→12, so this sorts naturally
+  goalGradeSel.disabled = !school;
+  fillSelect(goalGradeSel, grades, school ? 'Choose a grade…' : 'Choose a school first…', gradeOptionLabel);
+  goalContentSel.disabled = true;
+  fillSelect(goalContentSel, [], 'Choose a grade first…');
+  goalAssessmentSel.disabled = true;
+  fillSelect(goalAssessmentSel, [], 'Choose a content area first…');
+  goalResults.innerHTML = '';
+}
+
+function populateGoalContentOptions(){
+  const region = goalRegionSel.value;
+  const grade = goalGradeSel.value;
+  // Universal rows (e.g. GPA) apply across every content area in their grade band
+  // rather than being a content area of their own — exclude them from this list.
+  const rows = (SCHOOL_GRADE_GOALS[region] || []).filter(r => rowCoversGrade(r, grade) && !r.universal);
+  const contents = [...new Set(rows.map(r => r.subject))];
+  goalContentSel.disabled = !grade;
+  fillSelect(goalContentSel, contents, grade ? 'Choose a content area…' : 'Choose a grade first…');
+  goalAssessmentSel.disabled = true;
+  fillSelect(goalAssessmentSel, [], 'Choose a content area first…');
+  goalResults.innerHTML = '';
+}
+
+function populateGoalAssessmentOptions(){
+  const region = goalRegionSel.value;
+  const grade = goalGradeSel.value;
+  const content = goalContentSel.value;
+  const allRows = SCHOOL_GRADE_GOALS[region] || [];
+  // A goal applies here if it's specific to this content area, OR it's a universal
+  // (grade-band-wide) goal like GPA that covers this grade regardless of content.
+  const rows = allRows.filter(r => rowCoversGrade(r, grade) && (r.subject === content || r.universal));
+  const assessments = [...new Set(rows.map(r => r.assessment))];
+  goalAssessmentSel.disabled = !content;
+  fillSelect(goalAssessmentSel, assessments, content ? 'Choose a goal…' : 'Choose a content area first…');
+  goalResults.innerHTML = '';
+  // Most grade/content combos map to exactly one assessment — auto-select it
+  // so the result shows up right away instead of making folks pick a list of one.
+  if(assessments.length === 1){
+    goalAssessmentSel.value = assessments[0];
+    renderGoalRow();
+  }
+}
+
+function renderGoalRow(){
+  const region = goalRegionSel.value;
+  const school = goalSchoolSel.value;
+  const grade = goalGradeSel.value;
+  const content = goalContentSel.value;
+  const assessment = goalAssessmentSel.value;
+  if(!region || !school || !grade || !content || !assessment){ goalResults.innerHTML = ''; return; }
+  const r = (SCHOOL_GRADE_GOALS[region] || []).find(x => rowCoversGrade(x, grade) && x.assessment === assessment && (x.subject === content || x.universal));
+  if(!r){ goalResults.innerHTML = ''; return; }
+  const label = r.universal
+    ? r.gb + " (Grade " + r.grade + ") — GPA (applies to all content areas in this grade band, not just " + content + ")"
+    : rowLabel(r);
+  goalResults.innerHTML =
+    '<div class="goal-card"><h3>' + school + ' (' + REGION_LABEL[region] + ') — ' + gradeOptionLabel(grade) + ' — ' + label + '</h3>' +
+    '<div class="metric-row"><span class="metric-name">Proficiency Goal</span>' + fmtValue(r.prof) + '</div>' +
+    '<div class="metric-row"><span class="metric-name">B/FB Goal <span style="font-weight:400;">(far below/below, where applicable)</span></span>' + fmtValue(r.bfb) + '</div>' +
+    '</div>';
+}
+
+function populateDibelsGradeOptions(){
+  const region = goalRegionSel.value;
+  const grades = DIBELS_GRADES[region] || [];
+  dibelsGradeSel.innerHTML = '';
+  const chooseOpt = document.createElement('option');
+  chooseOpt.value = '';
+  chooseOpt.textContent = grades.length ? 'Choose a grade…' : 'No DIBELS Goals tab for this region yet';
+  dibelsGradeSel.appendChild(chooseOpt);
+  grades.forEach(g => {
+    const opt = document.createElement('option');
+    opt.value = g;
+    opt.textContent = g === "K-2" ? "K-2 (band)" : (g === "K" ? "Kindergarten" : "Grade " + g);
+    dibelsGradeSel.appendChild(opt);
+  });
+  dibelsResults.innerHTML = '';
+}
+
+function renderDibelsGrade(){
+  const region = goalRegionSel.value;
+  const grade = dibelsGradeSel.value;
+  if(!grade){ dibelsResults.innerHTML = ''; return; }
+  const gradeLabel = grade === "K-2" ? "K-2 (band)" : (grade === "K" ? "Kindergarten" : "Grade " + grade);
+  let html = '';
+  DIBELS_GROUPS.forEach(group => {
+    const v = dibelsValue(region, grade, group);
+    html += '<div class="goal-card"><h3>' + REGION_LABEL[region] + ' — ' + gradeLabel + ' — ' + group + '</h3>' +
+      '<div class="metric-row"><span class="metric-name">MOY % At/Above Goal</span>' + fmtValue(v.moyAtAbove) + '</div>' +
+      '<div class="metric-row"><span class="metric-name">EOY % At/Above Goal</span>' + fmtValue(v.eoyAtAbove) + '</div>' +
+      '<div class="metric-row"><span class="metric-name">MOY % Well Below Goal</span>' + fmtValue(v.moyWellBelow) + '</div>' +
+      '<div class="metric-row"><span class="metric-name">EOY % Well Below Goal</span>' + fmtValue(v.eoyWellBelow) + '</div>' +
+      '</div>';
+  });
+  dibelsResults.innerHTML = html;
+}
+
+goalRegionSel.addEventListener('change', () => {
+  if(!goalRegionSel.value){
+    goalCategoryWrap.style.display = 'none';
+    goalSchoolSel.disabled = true;
+    fillSelect(goalSchoolSel, [], 'Choose a region first…');
+    return;
+  }
+  goalCategoryWrap.style.display = '';
+  populateGoalSchoolOptions();
+  populateDibelsGradeOptions();
+});
+goalSchoolSel.addEventListener('change', populateGoalGradeOptions);
+goalGradeSel.addEventListener('change', populateGoalContentOptions);
+goalContentSel.addEventListener('change', populateGoalAssessmentOptions);
+goalAssessmentSel.addEventListener('change', renderGoalRow);
+dibelsGradeSel.addEventListener('change', renderDibelsGrade);
+
+catSchoolGradeBtn.addEventListener('click', () => {
+  catSchoolGradeBtn.classList.add('active');
+  catDibelsBtn.classList.remove('active');
+  schoolGradePanel.style.display = '';
+  dibelsPanel.style.display = 'none';
+});
+catDibelsBtn.addEventListener('click', () => {
+  catDibelsBtn.classList.add('active');
+  catSchoolGradeBtn.classList.remove('active');
+  dibelsPanel.style.display = '';
+  schoolGradePanel.style.display = 'none';
+});
 </script>
 </body>
 </html>
