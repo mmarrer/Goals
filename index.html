@@ -319,12 +319,13 @@
         </select>
       </div>
     </div>
-    <p class="data-note">Note: the numbers themselves come from the "KIPP NJ Goals, 2026-27" spreadsheet, which only covers Newark, Camden, and Paterson at the region level (not by individual school) — so every school within a region currently shows the same region-wide goal. Miami isn't in that spreadsheet at all yet, so Miami's grade/content/goal combinations will all show <span class="metric-value tbd">TBD</span> until a real numbers sheet exists for it; its DIBELS Goals tab doesn't exist either.</p>
+    <p class="data-note">Note: School &amp; Grade Proficiency Goals now come from real per-school rows in the "KIPP NJ Goals, 2026-27" spreadsheet for Newark, Camden, and Paterson (pick "Region Overall" for the region-wide rollup instead of one school). Culture &amp; Attendance comes from the separate "26-27 Student Experience Goals" sheet, which is region-wide only (no per-school breakout) and doesn't cover Miami yet. Miami has no per-school or Culture source sheet yet, so its School/Grade/Content/Goal combinations mostly show <span class="metric-value tbd">TBD</span>; its DIBELS Goals tab doesn't exist either.</p>
 
     <div id="goalCategoryWrap" style="display:none;">
       <div class="category-tabs">
         <button class="category-btn active" id="catSchoolGradeBtn">School &amp; Grade Proficiency Goals</button>
         <button class="category-btn" id="catDibelsBtn">DIBELS Goals</button>
+        <button class="category-btn" id="catCultureBtn">Culture &amp; Attendance</button>
       </div>
 
       <div id="schoolGradePanel">
@@ -362,11 +363,15 @@
         </div>
         <div id="dibelsResults"></div>
       </div>
+
+      <div id="culturePanel" style="display:none;">
+        <div id="cultureResults"></div>
+      </div>
     </div>
   </div>
 </div>
 
-<footer>Internal KTAF tool — Part 1 pulled from the "New Jersey" and "Miami" tabs of SY26-27 PM Metrics &amp; Goals; Part 2 pulled from the "KIPP NJ Goals, 2026-27" spreadsheet. Update the sheets, then re-run this tool to refresh.<br>Note: Newark, Camden, and Paterson all currently show the shared "New Jersey" tab data in Part 1 — the sheet's city-specific tabs ("TBD: newark targets," "TBD: camden targets," "TBD: paterson targets") aren't filled in yet. Once those are populated, this tool should be updated to pull city-specific goals instead.<br>As of this refresh, the New Jersey tab now includes the full Principals Culture &amp; Attendance set and the Portfolio Leadership (HOS/MDoS/CAO, MDoS/CAO) rows that were previously missing, plus updated Learning Specialists – Inclusion/Co-Teaching and Teachers – MLL metrics (a new Differential goal for MLL, and the Academic Growth i-Ready goal now specifies "on math").<br>In Part 2, almost all numeric targets are still TBD in the source sheet (only two GPA goals — Newark and Camden MS — are filled in as of this refresh); Paterson is also missing several grade-band/HS rows that exist for Newark and Camden, and the DIBELS Goals tab has no values filled in for any region yet. The School dropdown in Part 2 uses the actual school names and grade bands Margaret provided — Newark: SPARK/Seek/THRIVE/KURA/Life (K-4), BOLD/Justice/Purpose/TEAM/Rise (5-8), Lab/Collegiate (9-12); Camden: LSP (K-4), Sumner (K-6), LSM/Hatch (5-8), KHS (9-12); Paterson: Paterson ES (K-4), Paterson MS (5-8); Miami: Royalty/Legacy ES (K-5), Legacy MS/Courage (6-8), Miami Tech High (9 only). Selecting a school narrows the Grade dropdown to the grades that school actually serves. Neither source spreadsheet breaks numbers out by individual school, so every school in a region still shows that region's same shared goal. Miami's Part 2 rows are a structural placeholder built from Part 1's Miami metrics (DIBELS/Star/FAST/EOC), not a real numbers sheet, so they're all TBD; Miami also has no DIBELS Goals tab equivalent.</footer>
+<footer>Internal KTAF tool — Part 1 pulled from the "New Jersey" and "Miami" tabs of SY26-27 PM Metrics &amp; Goals; Part 2 pulled from the "KIPP NJ Goals, 2026-27" spreadsheet ("SY27 School and Grade Goals" tab). Update the sheets, then re-run this tool to refresh.<br>Note: Newark, Camden, and Paterson all currently show the shared "New Jersey" tab data in Part 1 — the sheet's city-specific tabs ("TBD: newark targets," "TBD: camden targets," "TBD: paterson targets") aren't filled in yet. Once those are populated, this tool should be updated to pull city-specific goals instead.<br>As of this Sept 2026 refresh, the Learning Specialists – Inclusion/Co-Teaching role split into three separate goals: a new K-2 iReady/DIBELS goal, the existing 75% NJSLA/NJGPA goal (now scoped to grades 3-12, was K-12), and the existing 9-12 GPA/course-completion goal.<br>Part 2 changed substantially this refresh: the source sheet now has full per-school data for Newark, Camden, and Paterson (not just region-wide rollups), so the School dropdown in Part 2 now pulls real school-specific numbers instead of every school in a region sharing one shared goal. "Region Overall" is still offered as the first School option for the region-wide rollup. School names match the source sheet exactly, which means a few differ from names used here before: Newark's HS formerly labeled "Collegiate" is "NCA" in the sheet; Camden's "LSP" is "Lanning Square Primary"; Paterson's two schools are "Paterson Prep Elementary" and "Paterson Prep Middle." High schools (Newark's Lab and NCA, Camden's KHS) now show full course-by-course breakdowns (individual AP/honors courses, SAT benchmarks, per-grade GPA, and a separate "Cumulative Unweighted GPA for College Apps" metric) rather than one HS-wide row per subject. A few brand-new courses (e.g. Geometry Honors, Algebra II Honors, "College Algebra II (DE)") have no goal set yet in the source sheet and show as TBD. Paterson still has no High School in the data (Paterson Prep only goes through grade 8), and its Region Overall still has no GPA row. Miami has no per-school source sheet yet, so all of its Schools still resolve to the same region-wide placeholder numbers (all TBD) regardless of which school is picked, and it still has no DIBELS Goals tab equivalent.</footer>
 
 <script>
 const GRADES = ["K","1","2","3","4","5","6","7","8","9","10","11","12"];
@@ -408,7 +413,8 @@ const DATA = {
     {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Resource Room", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Resource Room)", metric:"IEP Goal Progress", goal:"[xx]% of students on my caseload will make measurable progress toward their annual IEP goals by EOY, as documented in quarterly progress reports."},
     {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Resource Room", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Resource Room)", metric:"Academic Growth", goal:"[xx]% of students on my caseload will demonstrate at least one level of growth on i-Ready (Math) or well above average growth on DIBELS (ELA) by EOY, as tracked through bi-weekly progress monitoring."},
     {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Resource Room", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Resource Room)", metric:"Family & Compliance", goal:"100% of IEPs on my caseload will be held on time with required documentation.\nI will conduct at least [1] proactive family check-in per student per semester outside of formal IEP meetings."},
-    {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Inclusion / Co-Teaching", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Inclusion/Co-Teaching)", metric:"Academics: Topline Proficiency", goal:"75% of IEP bucket students are proficient on NJSLA"},
+    {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Inclusion / Co-Teaching", span:"K-2", grades:range("K","2"), contentArea:"Special Education (Inclusion/Co-Teaching)", metric:"Academics: Topline Proficiency", goal:"[xx]% of IEP students reach goals on iReady Math and DIBELS"},
+    {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Inclusion / Co-Teaching", span:"3-12", grades:range("3","12"), contentArea:"Special Education (Inclusion/Co-Teaching)", metric:"Academics: Topline Proficiency", goal:"75% of IEP bucket students are proficient on NJSLA/NJGPA"},
     {roleType:"Individual Contributor/Teacher", role:"Learning Specialists – Inclusion / Co-Teaching", span:"9–12", grades:range("9","12"), contentArea:"Special Education (Inclusion/Co-Teaching)", metric:"GPA & Course Completion (HS LSs)", goal:"[xx]% of students in my course(s) will maintain a GPA of [3.0] or above at semester, and my course failure rate will remain at or below [xx]%."},
     {roleType:"Individual Contributor/Teacher", role:"Teachers – Self-Contained Special Education", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Self-Contained)", metric:"DLM Assessment", goal:"[xx]% of students on my caseload who take the DLM alternate assessment will demonstrate growth of at least [1] Essential Element level in ELA and/or Math by EOY."},
     {roleType:"Individual Contributor/Teacher", role:"Teachers – Self-Contained Special Education", span:"K–12", grades:range("K","12"), contentArea:"Special Education (Self-Contained)", metric:"IEP Goal Progress", goal:"[xx]% of students on my caseload will make measurable progress toward their annual IEP goals by EOY, as documented in quarterly progress reports."},
@@ -531,135 +537,596 @@ const DATA = {
 // ---- Part 2: Goal Lookup (actual numbers) data, from "KIPP NJ Goals, 2026-27" ----
 // prof/bfb are null where the source sheet cell is still blank (TBD).
 const SCHOOL_GRADE_GOALS = {
-  newark: [
-    {gb:"3-8", grade:"3-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"3-8", grade:"3-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"ES", grade:"3-4", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"ES", grade:"K-2", subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
-    {gb:"ES", grade:"3-4", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5 and 8", subject:"Science", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"Science", assessment:"QA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"Social Studies", assessment:"QA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"GPA", assessment:"GPA", prof:"65%", bfb:"3%", universal:true},
-    {gb:"HS", grade:"9", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"HS", grade:"11", subject:"ELA", assessment:"NJGPA", prof:null, bfb:null},
-    {gb:"HS", grade:"9", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"HS", grade:"11", subject:"Math", assessment:"NJGPA", prof:null, bfb:null},
-    {gb:"HS", grade:"11", subject:"Science", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"History", assessment:"QA", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"ELA", assessment:"QA", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"Math", assessment:"QA", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"Science", assessment:"QA", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"CCR", assessment:"QA", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"GPA", assessment:"GPA", prof:null, bfb:null, universal:true}
-  ],
-  camden: [
-    {gb:"3-8", grade:"3-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"3-8", grade:"3-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"ES", grade:"3-4", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"ES", grade:"K-2", subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
-    {gb:"ES", grade:"3-4", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5 and 8", subject:"Science", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"Science", assessment:"QA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"Social Studies", assessment:"QA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
-    {gb:"HS", grade:"9", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"HS", grade:"11", subject:"ELA", assessment:"NJGPA", prof:null, bfb:null},
-    {gb:"HS", grade:"9", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"HS", grade:"11", subject:"Math", assessment:"NJGPA", prof:null, bfb:null},
-    {gb:"HS", grade:"11", subject:"Science", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"History", assessment:"QA", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"ELA", assessment:"QA", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"Math", assessment:"QA", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"Science", assessment:"QA", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"GPA", assessment:"GPA", prof:null, bfb:null, universal:true},
-    {gb:"HS", grade:"9-12", subject:"CCR", assessment:"QA", prof:null, bfb:null}
-  ],
-  paterson: [
-    {gb:"3-8", grade:"3-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"3-8", grade:"3-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"ES", grade:"3-4", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"ES", grade:"K-2", subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
-    {gb:"ES", grade:"3-4", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"ELA", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5 and 8", subject:"Science", assessment:"NJSLA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"Science", assessment:"QA", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"Social Studies", assessment:"QA", prof:null, bfb:null}
-    // Note: Paterson's tab does not yet include an MS GPA row or any HS rows —
-    // those exist for Newark and Camden but are still missing here.
-  ],
-  // Miami isn't in the "KIPP NJ Goals, 2026-27" spreadsheet at all — there's no numeric
-  // source sheet for it yet. These rows mirror the grade bands/subjects/assessments from
-  // the Miami "Metric Lookup" data (Part 1) — DIBELS, Star, FAST, EOC — so the structure
-  // is honest to how Miami actually measures things, but every number here is TBD until
-  // a real "KIPP Miami Goals" sheet exists to pull from.
-  miami: [
-    {gb:"ES", grade:"K-2", subject:"ELA", assessment:"DIBELS At/Above Benchmark", prof:null, bfb:null},
-    {gb:"ES", grade:"K-2", subject:"ELA", assessment:"DIBELS Well Below Benchmark", prof:null, bfb:null},
-    {gb:"ES", grade:"K-2", subject:"ELA", assessment:"Star Early Literacy/Reading (PM3)", prof:null, bfb:null},
-    {gb:"ES", grade:"K-2", subject:"Math", assessment:"Star Math (PM3)", prof:null, bfb:null},
-    {gb:"3-8", grade:"3-8", subject:"ELA", assessment:"DIBELS At/Above Benchmark", prof:null, bfb:null},
-    {gb:"3-8", grade:"3-8", subject:"ELA", assessment:"DIBELS Well Below Benchmark", prof:null, bfb:null},
-    {gb:"3-9", grade:"3-9", subject:"ELA", assessment:"FAST ELA (PM3)", prof:null, bfb:null},
-    {gb:"3-9", grade:"3-9", subject:"Math", assessment:"FAST Math/Alg EOC/Geo EOC (PM3)", prof:null, bfb:null},
-    {gb:"MS", grade:"5,8,9", subject:"Science", assessment:"Science/Biology EOC", prof:null, bfb:null},
-    {gb:"MS", grade:"6,7", subject:"Science", assessment:"QA3", prof:null, bfb:null},
-    {gb:"MS", grade:"5-8", subject:"History", assessment:"QA3", prof:null, bfb:null},
-    {gb:"MS", grade:"7", subject:"History", assessment:"Civics EOC", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"ELA", assessment:"PSAT/SAT Benchmark", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"Math", assessment:"PSAT/SAT Benchmark", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"History", assessment:"Final Exam", prof:null, bfb:null},
-    {gb:"HS", grade:"9-12", subject:"GPA", assessment:"GPA", prof:null, bfb:null, universal:true},
-    {gb:"K-12", grade:"K-12", subject:"Enrichment", assessment:"Culminating Performance Task", prof:null, bfb:null}
-  ]
-};
-
-// School dropdown options per region — these are the actual school names Margaret
-// provided; they aren't in either source spreadsheet (which only track region-wide
-// rollups), so picking a school doesn't change the underlying numbers, just labels
-// the result with which school you're looking at and narrows the Grade dropdown to
-// grades that school actually serves (see SCHOOL_GRADES below).
-const SCHOOL_OPTIONS = {
-  newark: ["SPARK","Seek","THRIVE","KURA","Life","BOLD","Justice","Purpose","TEAM","Rise","Lab","Collegiate"],
-  camden: ["LSP","LSM","Hatch","Sumner","KHS"],
-  paterson: ["Paterson MS","Paterson ES"],
-  miami: ["Legacy ES","Legacy MS","Royalty","Courage","Miami Tech High"]
-};
-
-// Which grades each school actually serves, per Margaret. BOLD spans both the ES and
-// MS grade bands (K-8), so its grade list is the union of both. Grade tokens use the
-// same K-12 format as the rest of the tool.
-const SCHOOL_GRADES = {
   newark: {
-    "SPARK": range("K","4"),
-    "Seek": range("K","4"),
-    "THRIVE": range("K","4"),
-    "KURA": range("K","4"),
-    "Life": range("K","4"),
-    "BOLD": range("5","8"),
-    "Justice": range("5","8"),
-    "Purpose": range("5","8"),
-    "TEAM": range("5","8"),
-    "Rise": range("5","8"),
-    "Lab": range("9","12"),
-    "Collegiate": range("9","12")
+    "Region Overall": [
+      {gb:"3-8", grade:"3-8", grades:range("3","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"3-8", grade:"3-8", grades:range("3","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5 and 8", grades:["5","8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"GPA", assessment:"GPA", prof:"65%", bfb:"3%", universal:true},
+      {gb:"HS", grade:"9", grades:["9"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"ELA", assessment:"NJGPA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Math", assessment:"NJGPA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"History", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"ELA", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"Math", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"GPA", assessment:"GPA", prof:"59%", bfb:"11%", universal:true},
+    ],
+    "KURA": [
+      {gb:"ES", grade:"3", grades:["3"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K", grades:["K"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"1", grades:["1"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"2", grades:["2"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3", grades:["3"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+    ],
+    "Life": [
+      {gb:"ES", grade:"3", grades:["3"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K", grades:["K"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"1", grades:["1"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"2", grades:["2"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3", grades:["3"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+    ],
+    "SPARK": [
+      {gb:"ES", grade:"3", grades:["3"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K", grades:["K"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"1", grades:["1"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"2", grades:["2"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3", grades:["3"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+    ],
+    "Seek": [
+      {gb:"ES", grade:"3", grades:["3"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K", grades:["K"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"1", grades:["1"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"2", grades:["2"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3", grades:["3"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+    ],
+    "THRIVE": [
+      {gb:"ES", grade:"3", grades:["3"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K", grades:["K"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"1", grades:["1"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"2", grades:["2"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3", grades:["3"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+    ],
+    "BOLD": [
+      {gb:"MS", grade:"5", grades:["5"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"6", grades:["6"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"7", grades:["7"], subject:"GPA", assessment:"GPA", prof:"59%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"8", grades:["8"], subject:"GPA", assessment:"GPA", prof:"66%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5 and 8", grades:["5","8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"GPA", assessment:"GPA", prof:"65%", bfb:"3%", universal:true},
+    ],
+    "Justice": [
+      {gb:"MS", grade:"5", grades:["5"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"6", grades:["6"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"7", grades:["7"], subject:"GPA", assessment:"GPA", prof:"59%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"8", grades:["8"], subject:"GPA", assessment:"GPA", prof:"66%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5 and 8", grades:["5","8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"GPA", assessment:"GPA", prof:"65%", bfb:"3%", universal:true},
+    ],
+    "Purpose": [
+      {gb:"MS", grade:"5", grades:["5"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"6", grades:["6"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"7", grades:["7"], subject:"GPA", assessment:"GPA", prof:"59%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"8", grades:["8"], subject:"GPA", assessment:"GPA", prof:"66%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5 and 8", grades:["5","8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"GPA", assessment:"GPA", prof:"65%", bfb:"3%", universal:true},
+    ],
+    "Rise": [
+      {gb:"MS", grade:"5", grades:["5"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"6", grades:["6"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"7", grades:["7"], subject:"GPA", assessment:"GPA", prof:"59%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"8", grades:["8"], subject:"GPA", assessment:"GPA", prof:"66%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5 and 8", grades:["5","8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"GPA", assessment:"GPA", prof:"65%", bfb:"3%", universal:true},
+    ],
+    "TEAM": [
+      {gb:"MS", grade:"5", grades:["5"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"MS Algebra I", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"6", grades:["6"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"7", grades:["7"], subject:"GPA", assessment:"GPA", prof:"59%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"8", grades:["8"], subject:"GPA", assessment:"GPA", prof:"66%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5 and 8", grades:["5","8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"GPA", assessment:"GPA", prof:"65%", bfb:"3%", universal:true},
+    ],
+    "Lab": [
+      {gb:"HS", grade:"9", grades:["9"], subject:"English I", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"English II", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"English III", assessment:"NJGPA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"English IV", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP English Language", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"Algebra I", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"Geometry", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"Geometry Honors", assessment:"QA", prof:"TBD. this is a new course. Goal will be set after QA1", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Algebra II", assessment:"NJGPA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Algebra II Honors", assessment:"QA", prof:"TBD. this is a new course. Goal will be set after QA1", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP Precalculus", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP Calculus AB", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Human Anatomy and Physiology", assessment:"QA", prof:"TBD. this is a new course. Goal will be set after QA1", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Chemistry", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Biology", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"US: Afican America/Latine History", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"AP African American (9th Grade Honors)", assessment:"AP", prof:"TBD. this is a new course. Goal will be set after QA1", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"World History Modern", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"US History II", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Economics and Civics", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP World History", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP US History", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP African American", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"SAT", assessment:"SAT", prof:"28% 1010+\n55% 890+", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"SAT", assessment:"SAT", prof:"22% 1010+\n45% 890+", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"College Algebra II (DE)", assessment:"Not Yet Defined", prof:null, bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"GPA", assessment:"GPA", prof:"60%", bfb:"10%", universal:true},
+      {gb:"HS", grade:"10", grades:["10"], subject:"GPA", assessment:"GPA", prof:"60%", bfb:"8%", universal:true},
+      {gb:"HS", grade:"11", grades:["11"], subject:"GPA", assessment:"GPA", prof:"69%", bfb:"5%", universal:true},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Cumulative Unweighted GPA for College Apps", assessment:"GPA", prof:"45%", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"GPA", assessment:"GPA", prof:"57%", bfb:"5%", universal:true},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"ELA", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Math", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"History", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"GPA", assessment:"GPA", prof:"62%", bfb:"7%", universal:true},
+    ],
+    "NCA": [
+      {gb:"HS", grade:"9", grades:["9"], subject:"English I", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"English II", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"English III", assessment:"NJGPA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"English IV", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP English Language", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"Algebra I", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"Geometry", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"Geometry Honors", assessment:"QA", prof:"TBD. this is a new course. Goal will be set after QA1", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Algebra II", assessment:"NJGPA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Algebra II Honors", assessment:"NJGPA", prof:"TBD. this is a new course. Goal will be set after QA1", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP Precalculus", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP Calculus AB", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Human Anatomy and Physiology", assessment:"QA", prof:"TBD. this is a new course. Goal will be set after QA1", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Chemistry", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Biology", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"US: Afican America/Latine History", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"AP African American (9th Grade Honors)", assessment:"AP", prof:"TBD. this is a new course. Goal will be set after QA1", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"World History Modern", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"US History II", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Economics and Civics", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP World History", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP US History", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP African American", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"SAT", assessment:"SAT", prof:"28% 1010+\n55% 890+", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"SAT", assessment:"SAT", prof:"22% 1010+\n45% 890+", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"College Algebra II (DE)", assessment:"Not Yet Defined", prof:null, bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"GPA", assessment:"GPA", prof:"60%", bfb:"13%", universal:true},
+      {gb:"HS", grade:"10", grades:["10"], subject:"GPA", assessment:"GPA", prof:"56%", bfb:"14%", universal:true},
+      {gb:"HS", grade:"11", grades:["11"], subject:"GPA", assessment:"GPA", prof:"53%", bfb:"15%", universal:true},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Cumulative Unweighted GPA for College Apps", assessment:"GPA", prof:"45%", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"GPA", assessment:"GPA", prof:"53%", bfb:"15%", universal:true},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"ELA", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Math", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"History", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"GPA", assessment:"GPA", prof:"56%", bfb:"14%", universal:true},
+    ],
   },
   camden: {
-    "LSP": range("K","4"),
-    "Sumner": range("K","6"),
-    "LSM": range("5","8"),
-    "Hatch": range("5","8"),
-    "KHS": range("9","12")
+    "Region Overall": [
+      {gb:"3-8", grade:"3-8", grades:range("3","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"3-8", grade:"3-8", grades:range("3","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5 and 8", grades:["5","8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"HS", grade:"9", grades:["9"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"ELA", assessment:"NJGPA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Math", assessment:"NJGPA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"History", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"ELA", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"Math", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"GPA", assessment:"GPA", prof:"54%", bfb:"24%", universal:true},
+    ],
+    "Lanning Square Primary": [
+      {gb:"ES", grade:"3", grades:["3"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"ES", grade:"4", grades:["4"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"ES", grade:"K", grades:["K"], subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+      {gb:"ES", grade:"1", grades:["1"], subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+      {gb:"ES", grade:"2", grades:["2"], subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+      {gb:"ES", grade:"3", grades:["3"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"ES", grade:"4", grades:["4"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+    ],
+    "Sumner": [
+      {gb:"ES", grade:"3", grades:["3"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"ES", grade:"4", grades:["4"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"ES", grade:"K", grades:["K"], subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+      {gb:"ES", grade:"1", grades:["1"], subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+      {gb:"ES", grade:"2", grades:["2"], subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+      {gb:"ES", grade:"3", grades:["3"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"ES", grade:"4", grades:["4"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"GPA", assessment:"GPA", prof:"71%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"6", grades:["6"], subject:"GPA", assessment:"GPA", prof:"66%", bfb:"3%", universal:true},
+      {gb:"3-8", grade:"3-8", grades:range("3","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"i-Ready", prof:null, bfb:null},
+      {gb:"3-8", grade:"3-8", grades:range("3","8"), subject:"Math", assessment:"NJSLA", prof:null, bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"GPA", assessment:"GPA", prof:"69%", bfb:"3%", universal:true},
+    ],
+    "Hatch": [
+      {gb:"MS", grade:"5", grades:["5"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"GPA", assessment:"GPA", prof:"71%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"6", grades:["6"], subject:"GPA", assessment:"GPA", prof:"66%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"7", grades:["7"], subject:"GPA", assessment:"GPA", prof:"75%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"8", grades:["8"], subject:"GPA", assessment:"GPA", prof:"56%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5 and 8", grades:["5","8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+    ],
+    "LSM": [
+      {gb:"MS", grade:"5", grades:["5"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"MS Algebra I", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"GPA", assessment:"GPA", prof:"71%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"6", grades:["6"], subject:"GPA", assessment:"GPA", prof:"66%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"7", grades:["7"], subject:"GPA", assessment:"GPA", prof:"75%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"8", grades:["8"], subject:"GPA", assessment:"GPA", prof:"56%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5 and 8", grades:["5","8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+    ],
+    "KHS": [
+      {gb:"HS", grade:"9", grades:["9"], subject:"English I", assessment:"NJSLA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"English II", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"English III", assessment:"NJGPA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"English IV", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP English Language", assessment:"AP", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"Algebra I", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"Geometry", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"Geometry Honors", assessment:"QA", prof:"TBD. this is a new course. Goal will be set after QA1", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Algebra II", assessment:"NJGPA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Algebra II Honors", assessment:"QA", prof:"TBD. this is a new course. Goal will be set after QA1", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP Precalculus", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP Calculus AB", assessment:"AP", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Human Anatomy and Physiology", assessment:"QA", prof:"TBD. this is a new course. Goal will be set after QA1", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Chemistry", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Biology", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"US: Afican America/Latine History", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"AP African American (9th Grade Honors)", assessment:"AP", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"10", grades:["10"], subject:"World History Modern", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"US History II", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Economics and Civics", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP World History", assessment:"AP", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP US History", assessment:"AP", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"AP African American", assessment:"AP", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"SAT", assessment:"SAT", prof:"28% 1010+\n55% 890+", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"SAT", assessment:"SAT", prof:"22% 1010+\n45% 890+", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"College Algebra II (DE)", assessment:"Not Yet Defined", prof:null, bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"11", grades:["11"], subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"9", grades:["9"], subject:"GPA", assessment:"GPA", prof:"60%", bfb:"33%", universal:true},
+      {gb:"HS", grade:"10", grades:["10"], subject:"GPA", assessment:"GPA", prof:"58%", bfb:"25%", universal:true},
+      {gb:"HS", grade:"11", grades:["11"], subject:"GPA", assessment:"GPA", prof:"52%", bfb:"18%", universal:true},
+      {gb:"HS", grade:"11", grades:["11"], subject:"Cumulative Unweighted GPA for College Apps", assessment:"GPA", prof:"45%", bfb:null},
+      {gb:"HS", grade:"12", grades:["12"], subject:"GPA", assessment:"GPA", prof:"45%", bfb:"18%", universal:true},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"ELA", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Math", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"History", assessment:"QA", prof:"plus 6 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"CCR", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"HS", grade:"All Grades", grades:range("9","12"), subject:"GPA", assessment:"GPA", prof:"54%", bfb:"24%", universal:true},
+    ],
   },
   paterson: {
-    "Paterson ES": range("K","4"),
-    "Paterson MS": range("5","8")
-  },
+    "Region Overall": [
+      {gb:"3-8", grade:"3-8", grades:range("3","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"3-8", grade:"3-8", grades:range("3","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5 and 8", grades:["5","8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+    ],
+    "Paterson Prep Elementary": [
+      {gb:"ES", grade:"3", grades:["3"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K", grades:["K"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"1", grades:["1"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"2", grades:["2"], subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3", grades:["3"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"4", grades:["4"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"i-Ready", prof:null, bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"ES", grade:"3-4", grades:range("3","4"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+    ],
+    "Paterson Prep Middle": [
+      {gb:"MS", grade:"5", grades:["5"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"6", grades:["6"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"8", grades:["8"], subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5", grades:["5"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"6", grades:["6"], subject:"GPA", assessment:"GPA", prof:"67%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"7", grades:["7"], subject:"GPA", assessment:"GPA", prof:"59%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"8", grades:["8"], subject:"GPA", assessment:"GPA", prof:"66%", bfb:"3%", universal:true},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"ELA", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"60% of students in ELA MTSS make Well Above Avg growth on DIBELS"},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Math", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:"30% of students in Math MTSS make stretch growth on i-Ready Math"},
+      {gb:"MS", grade:"5 and 8", grades:["5","8"], subject:"Science", assessment:"NJSLA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Science", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"Social Studies", assessment:"QA", prof:"plus 5 YoY on internal assessments", bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"GPA", assessment:"GPA", prof:"65%", bfb:"3%", universal:true},
+    ],
+  },  miami: {
+    "Region Overall": [
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"ELA", assessment:"DIBELS At/Above Benchmark", prof:null, bfb:null},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"ELA", assessment:"DIBELS Well Below Benchmark", prof:null, bfb:null},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"ELA", assessment:"Star Early Literacy/Reading (PM3)", prof:null, bfb:null},
+      {gb:"ES", grade:"K-2", grades:range("K","2"), subject:"Math", assessment:"Star Math (PM3)", prof:null, bfb:null},
+      {gb:"3-8", grade:"3-8", grades:range("3","8"), subject:"ELA", assessment:"DIBELS At/Above Benchmark", prof:null, bfb:null},
+      {gb:"3-8", grade:"3-8", grades:range("3","8"), subject:"ELA", assessment:"DIBELS Well Below Benchmark", prof:null, bfb:null},
+      {gb:"3-9", grade:"3-9", grades:range("3","9"), subject:"ELA", assessment:"FAST ELA (PM3)", prof:null, bfb:null},
+      {gb:"3-9", grade:"3-9", grades:range("3","9"), subject:"Math", assessment:"FAST Math/Alg EOC/Geo EOC (PM3)", prof:null, bfb:null},
+      {gb:"MS", grade:"5,8,9", grades:["5","8","9"], subject:"Science", assessment:"Science/Biology EOC", prof:null, bfb:null},
+      {gb:"MS", grade:"6,7", grades:["6","7"], subject:"Science", assessment:"QA3", prof:null, bfb:null},
+      {gb:"MS", grade:"5-8", grades:range("5","8"), subject:"History", assessment:"QA3", prof:null, bfb:null},
+      {gb:"MS", grade:"7", grades:["7"], subject:"History", assessment:"Civics EOC", prof:null, bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"ELA", assessment:"PSAT/SAT Benchmark", prof:null, bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"Math", assessment:"PSAT/SAT Benchmark", prof:null, bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"History", assessment:"Final Exam", prof:null, bfb:null},
+      {gb:"HS", grade:"9-12", grades:range("9","12"), subject:"GPA", assessment:"GPA", prof:null, bfb:null, universal:true},
+      {gb:"K-12", grade:"K-12", grades:range("K","12"), subject:"Enrichment", assessment:"Culminating Performance Task", prof:null, bfb:null},
+    ]
+  }
+};
+
+
+// School dropdown options per region. Newark, Camden, and Paterson come straight from
+// the "KIPP NJ Goals, 2026-27" spreadsheet's per-school rows (as of the Sept 2026
+// refresh) — school names here match the sheet exactly, which means a few differ from
+// names used informally before: Newark's HS formerly called "Collegiate" is "NCA" in
+// the sheet; Camden's "LSP" is spelled out as "Lanning Square Primary"; Paterson's
+// schools are "Paterson Prep Elementary" and "Paterson Prep Middle." "Region Overall"
+// is always the first option — pick it for the region-wide rollup instead of one school.
+// Miami has no per-school source data yet, so its schools are still a labeling-only
+// placeholder that all resolve to the same region-wide (TBD) numbers — see
+// getSchoolRows() below.
+const SCHOOL_OPTIONS = {
+  newark: ["Region Overall","KURA","Life","SPARK","Seek","THRIVE","BOLD","Justice","Purpose","Rise","TEAM","Lab","NCA"],
+  camden: ["Region Overall","Lanning Square Primary","Sumner","Hatch","LSM","KHS"],
+  paterson: ["Region Overall","Paterson Prep Elementary","Paterson Prep Middle"],
+  miami: ["Region Overall","Royalty","Legacy ES","Legacy MS","Courage","Miami Tech High"]
+};
+
+// Miami is the only region left on the old placeholder pattern (no per-school source
+// data), so it still needs a hand-maintained grade list per "school" to narrow the
+// Grade dropdown the same way Newark/Camden/Paterson now do automatically from their
+// real per-school row data (see getSchoolRows/populateGoalGradeOptions below).
+const SCHOOL_GRADES = {
   miami: {
     "Royalty": range("K","5"),
     "Legacy ES": range("K","5"),
@@ -686,6 +1153,112 @@ function dibelsValue(region, grade, group){
   const key = region + "|" + grade + "|" + group;
   return DIBELS_VALUES[key] || {moyAtAbove:null, eoyAtAbove:null, moyWellBelow:null, eoyWellBelow:null};
 }
+
+// Culture & Attendance: transcribed from the "26-27 Student Experience Goals" sheet
+// (single "26-27 Goals" tab, region-wide only — no per-school breakout, and no Miami
+// column). Each item's target is embedded in its own label text, same convention as
+// the qualitative goal text elsewhere in this tool. Sections and item lists differ
+// slightly by region because Paterson has no high school (Paterson Prep only goes
+// through grade 8), so several HS-only rows are "n/a" or simply don't exist for it.
+const CULTURE_GOALS = {
+  newark: [
+    {section:"Quarterly Incentives", items:[
+      "ES - Quarterly Incentive: 80%", "MS - Quarterly Incentive: 80%", "HS - Quarterly Incentive: 80%"
+    ]},
+    {section:"School Community Diagnostic", items:[
+      "Region Survey Completion: 85%", "ES - Grade 4 survey completion: 85%", "MS - Survey Completion: 85%", "HS - Survey Completion: 85%",
+      "ES - Overall Student Response Avg > 3.0", "MS - Overall Student Response Avg > 3.0", "HS - Overall Student Response Avg > 3.0",
+      "ES - Question 2 Student Response Avg > 3.15", "MS - Question 2 Student Response Avg > 3.15", "HS - Question 2 Student Response Avg > 3.15",
+      "Overall Staff Response Avg > 3.2", "Overall Family Response Avg > 3.2"
+    ]},
+    {section:"Out of School Suspension", items:[
+      "Region OSS: 12%", "ES (All): 3%", "ES (SPED): 5%", "MS (All): 13%", "MS (SPED): 17%", "HS (All): 20%", "HS (SPED): 27%"
+    ]},
+    {section:"Memorable Experiences", items:[
+      "Values Experience Grade 2: > 90%", "Values Experience Grade 7: > 90%", "Values Experience Grade 10: > 90%",
+      "College Trips Grade 3: > 90%", "College Trips Grade 6: > 90%", "College Trips Grade 9: > 90%"
+    ]},
+    {section:"Co-Curricular Engagement", items:[
+      "Increase Access to SGA", "Plan and Execute Student Leadership Conference for SGA",
+      "Implement Student Athlete Eligibility Policy (MS)", "Increase Access to Soccer (ES and MS)", "Increase Access to Basketball (ES and MS)"
+    ]},
+    {section:"TNTP (Learning Environment)", items:[
+      "All schools above KIPP National Average in Learning Environment", "Average across all schools increase > 8% in Focus Areas",
+      "All Schools > 50% (Consistent Expectations & Consequences)", "All Schools > 50% (Interactions...Care & Respect)", "All Schools > 60% (Fun & Joyful)"
+    ]},
+    {section:"Compliance", items:[
+      "ES - SSDS Submission entry dates: 90%", "MS - SSDS Submission entry dates: 90%", "HS - SSDS Submission entry dates: 90%",
+      "ES - HIB Investigations completed and entered: 100%", "MS - HIB Investigations completed and entered: 100%", "HS - HIB Investigations completed and entered: 100%",
+      "> 90% of school based staff received necessary trainings"
+    ]},
+    {section:"Other Access Initiatives", items:["Family Partnership Coordinators"]}
+  ],
+  camden: [
+    {section:"Quarterly Incentives", items:[
+      "ES - Quarterly Incentive: 80%", "MS - Quarterly Incentive: 80%", "HS - Quarterly Incentive: 80%"
+    ]},
+    {section:"School Community Diagnostic", items:[
+      "Region Survey Completion: 85%", "ES - Grade 4 survey completion: 85%", "MS - Survey Completion: 85%", "HS - Survey Completion: 85%",
+      "ES - Overall Student Response Avg > 3.0", "MS - Overall Student Response Avg > 3.0", "HS - Overall Student Response Avg > 3.0",
+      "ES - Question 2 Student Response Avg > 3.15", "MS - Question 2 Student Response Avg > 3.15", "HS - Question 2 Student Response Avg > 3.15",
+      "Overall Staff Response Avg > 3.2", "Overall Family Response Avg > 3.2"
+    ]},
+    {section:"Out of School Suspension", items:[
+      "Region OSS: 16%", "ES (All): 6%", "ES (SPED): 8%", "MS (All): 13%", "MS (SPED): 17%", "HS (All): 30%", "HS (SPED): 30%"
+    ]},
+    {section:"Memorable Experiences", items:[
+      "Values Experience Grade 2: > 90%", "Values Experience Grade 7: > 90%", "Values Experience Grade 10: > 90%",
+      "College Trips Grade 3: > 90%", "College Trips Grade 6: > 90%", "College Trips Grade 9: > 90%"
+    ]},
+    {section:"Co-Curricular Engagement", items:[
+      "Increase Access to SGA", "Plan and Execute Student Leadership Conference for SGA",
+      "Implement Student Athlete Eligibility Policy (MS)", "Increase Access to Soccer (ES and MS)", "Increase Access to Basketball (ES and MS)"
+    ]},
+    {section:"TNTP (Learning Environment)", items:[
+      "All schools above KIPP National Average in Learning Environment", "Average across all schools increase > 8% in Focus Areas",
+      "All Schools > 50% (Consistent Expectations & Consequences)", "All Schools > 50% (Interactions...Care & Respect)", "All Schools > 60% (Fun & Joyful)"
+    ]},
+    {section:"Compliance", items:[
+      "ES - SSDS Submission entry dates: 90%", "MS - SSDS Submission entry dates: 90%", "HS - SSDS Submission entry dates: 90%",
+      "ES - HIB Investigations completed and entered: 100%", "MS - HIB Investigations completed and entered: 100%", "HS - HIB Investigations completed and entered: 100%",
+      "> 90% of school based staff received necessary trainings"
+    ]},
+    {section:"Other Access Initiatives", items:["Family Partnership Coordinators"]}
+  ],
+  paterson: [
+    {section:"Quarterly Incentives", items:[
+      "ES - Quarterly Incentive: 80%", "MS - Quarterly Incentive: 80%", "HS - Quarterly Incentive: n/a (no high school)"
+    ]},
+    {section:"School Community Diagnostic", items:[
+      "Region Survey Completion: 85%", "ES - Grade 4 survey completion: 85%", "MS - Survey Completion: 85%", "HS - Survey Completion: n/a (no high school)",
+      "ES - Overall Student Response Avg > 3.0", "MS - Overall Student Response Avg > 3.0", "HS - Overall Student Response Avg > 3.0",
+      "ES - Question 2 Student Response Avg > 3.15", "MS - Question 2 Student Response Avg > 3.15", "HS - Question 2 Student Response Avg: n/a (no high school)",
+      "Overall Staff Response Avg > 3.2", "Overall Family Response Avg > 3.2"
+    ]},
+    {section:"Out of School Suspension", items:[
+      "Region OSS: 8%", "ES (All): 3%", "ES (SPED): 5%", "MS (All): 13%", "MS (SPED): 17%", "HS (All): n/a (no high school)", "HS (SPED): n/a (no high school)"
+    ]},
+    {section:"Memorable Experiences", items:[
+      "Values Experience Grade 2: > 90%", "Values Experience Grade 7: > 90%",
+      "College Trips Grade 3: > 90%", "College Trips Grade 6: > 90%"
+    ]},
+    {section:"Co-Curricular Engagement", items:[
+      "Increase Access to SGA", "Plan and Execute Student Leadership Conference for SGA",
+      "Implement Student Athlete Eligibility Policy (MS)", "Increase Access to Soccer (ES and MS)", "Increase Access to Basketball (ES and MS)"
+    ]},
+    {section:"TNTP (Learning Environment)", items:[
+      "All schools above KIPP National Average in Learning Environment", "Average across all schools increase > 8% in Focus Areas",
+      "All Schools > 50% (Consistent Expectations & Consequences)", "All Schools > 50% (Interactions...Care & Respect)", "All Schools > 60% (Fun & Joyful)"
+    ]},
+    {section:"Compliance", items:[
+      "ES - SSDS Submission entry dates: 90%", "MS - SSDS Submission entry dates: 90%",
+      "ES - HIB Investigations completed and entered: 100%", "MS - HIB Investigations completed and entered: 100%",
+      "> 90% of school based staff received necessary trainings"
+    ]},
+    {section:"Other Access Initiatives", items:["Family Partnership Coordinators"]}
+  ]
+  // Miami has no row in the "26-27 Student Experience Goals" sheet at all yet.
+};
 
 const REGION_LABEL = {newark:"Newark, NJ", camden:"Camden, NJ", paterson:"Paterson, NJ", miami:"Miami, FL"};
 // Newark, Camden, and Paterson all pull from the shared "New Jersey" tab until the sheet's
@@ -875,14 +1448,17 @@ const goalSchoolSel = document.getElementById('goalSchool');
 const goalCategoryWrap = document.getElementById('goalCategoryWrap');
 const catSchoolGradeBtn = document.getElementById('catSchoolGradeBtn');
 const catDibelsBtn = document.getElementById('catDibelsBtn');
+const catCultureBtn = document.getElementById('catCultureBtn');
 const schoolGradePanel = document.getElementById('schoolGradePanel');
 const dibelsPanel = document.getElementById('dibelsPanel');
+const culturePanel = document.getElementById('culturePanel');
 const goalGradeSel = document.getElementById('goalGrade');
 const goalContentSel = document.getElementById('goalContent');
 const goalAssessmentSel = document.getElementById('goalAssessment');
 const goalResults = document.getElementById('goalResults');
 const dibelsGradeSel = document.getElementById('dibelsGrade');
 const dibelsResults = document.getElementById('dibelsResults');
+const cultureResults = document.getElementById('cultureResults');
 
 function fmtValue(v){
   return v === null || v === undefined || v === ''
@@ -891,7 +1467,18 @@ function fmtValue(v){
 }
 
 function rowLabel(r){
-  return r.gb + " (Grade " + r.grade + ") — " + r.subject + " — " + r.assessment;
+  const gradeText = r.grade === "All Grades" ? "All Grades" : "Grade " + r.grade;
+  return r.gb + " (" + gradeText + ") — " + r.subject + " — " + r.assessment;
+}
+
+// Newark/Camden/Paterson rows now come pre-tagged with a "grades" array (computed the
+// same way Part 1's role rows are) instead of needing runtime parsing — this returns
+// the right row bucket for a region+school pair, falling back to that region's
+// "Region Overall" bucket for Miami (which has no per-school source data) or for any
+// school that somehow isn't in the data.
+function getSchoolRows(region, school){
+  const bucket = SCHOOL_GRADE_GOALS[region] || {};
+  return bucket[school] || bucket["Region Overall"] || [];
 }
 
 // The sheet expresses "Grade" as bands/lists like "3-8", "5 and 8", "K-2" — expand
@@ -926,7 +1513,7 @@ function fillSelect(sel, values, placeholder, labelFn){
 }
 
 function rowCoversGrade(r, grade){
-  return parseGradeTokens(r.grade).indexOf(grade) !== -1;
+  return r.grades.indexOf(grade) !== -1;
 }
 
 function populateGoalSchoolOptions(){
@@ -943,16 +1530,19 @@ function populateGoalSchoolOptions(){
   goalResults.innerHTML = '';
 }
 
-// Note: neither source spreadsheet breaks numbers out by individual school — every
-// school within a region shares the same region-wide goal. So "school" affects the
-// label on the result card below AND narrows Grade to only the grades that school
-// actually serves (via SCHOOL_GRADES), but doesn't change the underlying numbers.
+// Newark, Camden, and Paterson now carry real per-school rows (from the "KIPP NJ
+// Goals, 2026-27" sheet's individual school breakdowns), so "school" changes the
+// actual numbers, not just the label — the Grade dropdown is narrowed to whatever
+// grades that specific school's rows actually cover. Miami still has no per-school
+// source data, so every Miami "school" resolves to the same region-wide rows via
+// getSchoolRows(), and its Grade dropdown still uses the hand-maintained SCHOOL_GRADES
+// table above.
 function populateGoalGradeOptions(){
   const region = goalRegionSel.value;
   const school = goalSchoolSel.value;
-  const rows = SCHOOL_GRADE_GOALS[region] || [];
+  const rows = getSchoolRows(region, school);
   const covered = new Set();
-  rows.forEach(r => parseGradeTokens(r.grade).forEach(g => covered.add(g)));
+  rows.forEach(r => r.grades.forEach(g => covered.add(g)));
   const schoolGrades = (SCHOOL_GRADES[region] || {})[school];
   const grades = GRADES.filter(g => covered.has(g) && (!schoolGrades || schoolGrades.indexOf(g) !== -1)); // GRADES is already K→12, so this sorts naturally
   goalGradeSel.disabled = !school;
@@ -966,10 +1556,11 @@ function populateGoalGradeOptions(){
 
 function populateGoalContentOptions(){
   const region = goalRegionSel.value;
+  const school = goalSchoolSel.value;
   const grade = goalGradeSel.value;
   // Universal rows (e.g. GPA) apply across every content area in their grade band
   // rather than being a content area of their own — exclude them from this list.
-  const rows = (SCHOOL_GRADE_GOALS[region] || []).filter(r => rowCoversGrade(r, grade) && !r.universal);
+  const rows = getSchoolRows(region, school).filter(r => rowCoversGrade(r, grade) && !r.universal);
   const contents = [...new Set(rows.map(r => r.subject))];
   goalContentSel.disabled = !grade;
   fillSelect(goalContentSel, contents, grade ? 'Choose a content area…' : 'Choose a grade first…');
@@ -980,9 +1571,10 @@ function populateGoalContentOptions(){
 
 function populateGoalAssessmentOptions(){
   const region = goalRegionSel.value;
+  const school = goalSchoolSel.value;
   const grade = goalGradeSel.value;
   const content = goalContentSel.value;
-  const allRows = SCHOOL_GRADE_GOALS[region] || [];
+  const allRows = getSchoolRows(region, school);
   // A goal applies here if it's specific to this content area, OR it's a universal
   // (grade-band-wide) goal like GPA that covers this grade regardless of content.
   const rows = allRows.filter(r => rowCoversGrade(r, grade) && (r.subject === content || r.universal));
@@ -1005,10 +1597,15 @@ function renderGoalRow(){
   const content = goalContentSel.value;
   const assessment = goalAssessmentSel.value;
   if(!region || !school || !grade || !content || !assessment){ goalResults.innerHTML = ''; return; }
-  const r = (SCHOOL_GRADE_GOALS[region] || []).find(x => rowCoversGrade(x, grade) && x.assessment === assessment && (x.subject === content || x.universal));
+  const candidates = getSchoolRows(region, school).filter(x => rowCoversGrade(x, grade) && x.assessment === assessment && (x.subject === content || x.universal));
+  // Prefer an exact subject match (e.g. a school's own "Cumulative Unweighted GPA for
+  // College Apps" row) over a universal grade-band-wide fallback like the per-grade GPA
+  // row, so a specifically-named goal never gets shadowed by the generic one.
+  const r = candidates.find(x => x.subject === content) || candidates.find(x => x.universal);
   if(!r){ goalResults.innerHTML = ''; return; }
+  const gradeText = r.grade === "All Grades" ? "All Grades" : "Grade " + r.grade;
   const label = r.universal
-    ? r.gb + " (Grade " + r.grade + ") — GPA (applies to all content areas in this grade band, not just " + content + ")"
+    ? r.gb + " (" + gradeText + ") — GPA (applies to all content areas in this grade band, not just " + content + ")"
     : rowLabel(r);
   goalResults.innerHTML =
     '<div class="goal-card"><h3>' + school + ' (' + REGION_LABEL[region] + ') — ' + gradeOptionLabel(grade) + ' — ' + label + '</h3>' +
@@ -1052,6 +1649,22 @@ function renderDibelsGrade(){
   dibelsResults.innerHTML = html;
 }
 
+// Culture & Attendance has no Grade/Content/Goal cascade — it's one region-wide list
+// of goals grouped by section, so it only reacts to the Region dropdown.
+function renderCultureGoals(){
+  const region = goalRegionSel.value;
+  const sections = CULTURE_GOALS[region];
+  if(!sections){
+    cultureResults.innerHTML = '<p class="data-note">No Culture &amp; Attendance data for ' + (REGION_LABEL[region] || 'this region') + ' yet — the "26-27 Student Experience Goals" sheet doesn\'t cover it.</p>';
+    return;
+  }
+  cultureResults.innerHTML = sections.map(sec =>
+    '<div class="goal-card"><h3>' + REGION_LABEL[region] + ' — ' + sec.section + '</h3>' +
+    sec.items.map(item => '<div class="metric-row"><span class="metric-value">' + item + '</span></div>').join('') +
+    '</div>'
+  ).join('');
+}
+
 goalRegionSel.addEventListener('change', () => {
   if(!goalRegionSel.value){
     goalCategoryWrap.style.display = 'none';
@@ -1062,6 +1675,7 @@ goalRegionSel.addEventListener('change', () => {
   goalCategoryWrap.style.display = '';
   populateGoalSchoolOptions();
   populateDibelsGradeOptions();
+  renderCultureGoals();
 });
 goalSchoolSel.addEventListener('change', populateGoalGradeOptions);
 goalGradeSel.addEventListener('change', populateGoalContentOptions);
@@ -1069,18 +1683,13 @@ goalContentSel.addEventListener('change', populateGoalAssessmentOptions);
 goalAssessmentSel.addEventListener('change', renderGoalRow);
 dibelsGradeSel.addEventListener('change', renderDibelsGrade);
 
-catSchoolGradeBtn.addEventListener('click', () => {
-  catSchoolGradeBtn.classList.add('active');
-  catDibelsBtn.classList.remove('active');
-  schoolGradePanel.style.display = '';
-  dibelsPanel.style.display = 'none';
-});
-catDibelsBtn.addEventListener('click', () => {
-  catDibelsBtn.classList.add('active');
-  catSchoolGradeBtn.classList.remove('active');
-  dibelsPanel.style.display = '';
-  schoolGradePanel.style.display = 'none';
-});
+function setCategoryTab(activeBtn, activePanel){
+  [catSchoolGradeBtn, catDibelsBtn, catCultureBtn].forEach(b => b.classList.toggle('active', b === activeBtn));
+  [schoolGradePanel, dibelsPanel, culturePanel].forEach(p => p.style.display = (p === activePanel ? '' : 'none'));
+}
+catSchoolGradeBtn.addEventListener('click', () => setCategoryTab(catSchoolGradeBtn, schoolGradePanel));
+catDibelsBtn.addEventListener('click', () => setCategoryTab(catDibelsBtn, dibelsPanel));
+catCultureBtn.addEventListener('click', () => setCategoryTab(catCultureBtn, culturePanel));
 </script>
 </body>
 </html>
